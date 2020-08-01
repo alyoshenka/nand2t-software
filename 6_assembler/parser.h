@@ -1,19 +1,26 @@
 
 
 #include <string>
+#include <fstream>
 
 #include "commandType.h"
 
 using std::string;
+using std::ifstream;
 
 /*  Encapsulates access to the input code. Reads an assembly language command, parses it, and
     provides convenient access to the command’s components (fields and symbols). In addition, removes all
     white space and comments. */
 class parser{
+
+    string curCmd;
+    ifstream myFile;
     
 public:
     // opens the input file and gets ready to use it
     parser(char* inFile);
+    // closes the input file
+    ~parser();
     // are there more commands in the input?
     bool hasMoreCommands();
     /* reads the next command from the input and makes it the current command
