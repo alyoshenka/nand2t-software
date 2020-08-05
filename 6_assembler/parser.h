@@ -2,16 +2,21 @@
 
 #include <string>
 #include <fstream>
+#include <map>
 
 #include "commandType.h"
 
 using std::string;
 using std::ifstream;
+using std::map;
 
 /*  Encapsulates access to the input code. Reads an assembly language command, parses it, and
     provides convenient access to the command’s components (fields and symbols). In addition, removes all
     white space and comments. */
 class parser{
+
+    map<string, string> compMapNotA;
+    map<string, string> compMapA;
 
     string curCmd;
     ifstream myFile;
@@ -21,6 +26,8 @@ public:
     parser(char* inFile);
     // closes the input file
     ~parser();
+    // current command string
+    string getCurCmd();
     // are there more commands in the input?
     bool hasMoreCommands();
     /* reads the next command from the input and makes it the current command
