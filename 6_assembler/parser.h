@@ -8,6 +8,7 @@
 
 using std::string;
 using std::ifstream;
+using std::ofstream;
 using std::map;
 
 /*  Encapsulates access to the input code. Reads an assembly language command, parses it, and
@@ -19,11 +20,12 @@ class parser{
     map<string, string> compMapA;
 
     string curCmd;
-    ifstream myFile;
+    ifstream inFile;
+    ofstream outFile;
     
 public:
     // opens the input file and gets ready to use it
-    parser(char* inFile);
+    parser(char* fileName);
     // closes the input file
     ~parser();
     // current command string

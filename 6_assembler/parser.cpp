@@ -7,7 +7,7 @@
 
 using std::string;
 
-parser::parser(char* inFile){
+parser::parser(char* fileName){
 
     curCmd = "";
 
@@ -41,20 +41,28 @@ parser::parser(char* inFile){
     compMapA["D&M"]="000000";
     compMapA["D|M"]="010101";
 
-    std::cout << "opening file " << inFile << std::endl;
+    std::cout << "opening file " << fileName << " for reading" << std::endl;
 
-    myFile.open(inFile);
-    if(!myFile.is_open()){
-        std::cout << "error opening " << inFile << " for reading" << std::endl;
+    inFile.open(fileName);
+    if(!inFile.is_open()){
+        std::cout << "error opening " << fileName << " for reading" << std::endl;
     }
+
+    string newName(fileName);
+    int dotIdx = newName.find('.');
+    newName.replace(dotIdx, 4, ".hack");
+
+    std::cout << "opening file " << newName << " for writing" << std::endl;
+    outFile.open(newName);
 
     // initialize
     advance();
 }
 
 parser::~parser(){
-    std::cout << "closing file" << std::endl;
-    myFile.close();
+    std::cout << "closing files" << std::endl;
+    inFile.close();
+    outFile.close();
 }
 
 string parser::getCurCmd(){
@@ -62,16 +70,19 @@ string parser::getCurCmd(){
 }
 
 bool parser::hasMoreCommands(){
-    return !curCmd.empty();
+    return !inFile.eof();
 }
 
 void parser::advance(){
-    // try
-    if(myFile.eof()) { curCmd.clear(); }
-    else { getline(myFile, curCmd); }
-    // catch: curCmd = empty
 
-    if(curCmd[0] == '/' && curCmd[1] == '/'){ advance(); }
+    getline(inFile, curCmd);
+
+    // ignore comments and empty lines
+    if(curCmd[0] == '/' && curCmd[1] == '/' 
+        || curCmd.empty() && !inFile.eof()){ 
+            advance(); 
+    }
+
     return;
 }
 
