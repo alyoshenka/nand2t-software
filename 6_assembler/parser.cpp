@@ -11,36 +11,6 @@ parser::parser(char* fileName){
 
     curCmd = "";
 
-    compMapNotA["0"]="101010";
-    compMapNotA["1"]="111111";
-    compMapNotA["-1"]="111010";
-    compMapNotA["D"]="001100";
-    compMapNotA["A"]="110000";
-    compMapNotA["!D"]="001101";
-    compMapNotA["!A"]="110001";
-    compMapNotA["-D"]="001111";
-    compMapNotA["-A"]="110011";
-    compMapNotA["D+1"]="011111";
-    compMapNotA["A+1"]="110111";
-    compMapNotA["D-1"]="001110";
-    compMapNotA["A-1"]="110010";
-    compMapNotA["D+A"]="000010";
-    compMapNotA["D-A"]="010011";
-    compMapNotA["A-D"]="000111";
-    compMapNotA["D&A"]="000000";
-    compMapNotA["D|A"]="010101";
-
-    compMapA["M"]="110000";
-    compMapA["!M"]="110001";
-    compMapA["-M"]="110011";
-    compMapA["M+1"]="110111";
-    compMapA["M-1"]="110010";
-    compMapA["D+M"]="000010";
-    compMapA["D-M"]="010011";
-    compMapA["M-D"]="000111";
-    compMapA["D&M"]="000000";
-    compMapA["D|M"]="010101";
-
     std::cout << "opening file " << fileName << " for reading" << std::endl;
 
     inFile.open(fileName);
@@ -87,7 +57,7 @@ void parser::advance(){
 }
 
 commandType parser::currentCommand(){
-    if(curCmd == "@"){
+    if(curCmd[0] == '@'){
         return commandType::A_COMMAND;
     }else if (curCmd == "("){
         return commandType::L_COMMAND;
@@ -108,56 +78,35 @@ string parser::symbol(){
 }
 
 string parser::comp(){
-    if(currentCommand()==commandType::C_COMMAND){
-        // notA
-        return compMapNotA[curCmd];
-    }else{
-        // A
-        return compMapA[curCmd];
-    }
+    // whatever is after =
+    int idx = curCmd.find('=') + 1;
+    int len = curCmd.length();
+    string ret = curCmd.substr(idx, len - idx);
+    return ret;
 }
 
 string parser::dest(){
-    if(curCmd.compare("null")){
-        return "000";
-    }else if(curCmd.compare("M")){
-        return "001";
-    }else if(curCmd.compare("D")){
-        return "010";
-    }else if(curCmd.compare("MD")){
-        return "011";
-    }else if(curCmd.compare("A")){
-        return "100";
-    }else if(curCmd.compare("AM")){
-        return "101";
-    }else if(curCmd.compare("AD")){
-        return "110";
-    }else if(curCmd.compare("AMD")){
-        return "111";
-    }else{
-        return "";
+    // whatever is before = or ;
+    int idx = curCmd.find('=');
+    if(idx == -1){
+        idx = curCmd.find(';');
     }
+    if(idx == -1){
+        std::cout << "invalid dest" << std::endl;
+    }
+    string ret = curCmd.substr(0, idx);
+    return ret;
 }
 
 string parser::jump(){
-    if(curCmd.compare("null")){
-        return "000";
-    }else if(curCmd.compare("JGT")){
-        return "001";
-    }else if(curCmd.compare("JEQ")){
-        return "010";
-    }else if(curCmd.compare("JGE")){
-        return "011";
-    }else if(curCmd.compare("JLT")){
-        return "100";
-    }else if(curCmd.compare("JNE")){
-        return "101";
-    }else if(curCmd.compare("JLE")){
-        return "110";
-    }else if(curCmd.compare("JMP")){
-        return "111";
-    }else{
-        return "";
+    // whatever is after ;
+    // null if =
+    int idx = curCmd.find(';') + 1;
+    if(idx == 0){
+        return "null";
     }
+    int len = curCmd.length();
+    string ret = curCmd.substr(idx, len - idx);
+    return ret;
 }
 
