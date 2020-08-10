@@ -4,7 +4,8 @@
 
 int* dest(string mnem){
     int* ret = new int[3];
-    if(mnem.compare("null") == 0){
+    if(mnem.compare("null") == 0
+        || mnem.compare("0") == 0){
         ret[0] = 0;
         ret[1] = 0;
         ret[2] = 0;

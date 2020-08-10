@@ -79,20 +79,37 @@ string parser::symbol(){
 }
 
 string parser::comp(){
-    // whatever is after =
+    // whatever is after = or ;
+
+    // WTF
+
+    string ret = "";
+
+    // comp
     int idx = curCmd.find('=') + 1;
-    int len = curCmd.length();
-    string ret = curCmd.substr(idx, len - idx);
+    if(idx > 0 && idx <= curCmd.length()){
+        int len = curCmd.length();
+        ret = curCmd.substr(idx, len - idx);
+    }else{
+        // jump
+        idx = curCmd.find(';');
+        if(idx >= 0 && idx < curCmd.length()){
+            ret = curCmd.substr(0, idx);
+        }else{
+            std::cout << "ERROR" << std::endl;
+        }
+    }
+    
     return ret;
 }
 
 string parser::dest(){
     // whatever is before = or ;
     int idx = curCmd.find('=');
-    if(idx == -1){
+    if(idx < 0 || idx >= curCmd.length()){
         idx = curCmd.find(';');
     }
-    if(idx == -1){
+    if(idx < 0 || idx >= curCmd.length()){
         std::cout << "invalid dest" << std::endl;
     }
     string ret = curCmd.substr(0, idx);
