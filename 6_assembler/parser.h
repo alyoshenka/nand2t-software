@@ -42,4 +42,6 @@ public:
     string comp();
     /* returns the jump mnemonic in the current C command */
     string jump();
+    /* writes a given line to the output file */
+    void push(string line);
 };

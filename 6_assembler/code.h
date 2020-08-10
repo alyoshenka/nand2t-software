@@ -6,3 +6,5 @@ using std::string;
 int* dest(string mnem);
 int* comp(string mnem);
 int* jump(string mnem);
+
+int* sym_to_bin(string num);

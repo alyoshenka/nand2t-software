@@ -41,11 +41,6 @@ int* dest(string mnem){
         ret[1] = -1;
         ret[2] = -1;
     }
-    std::cout << "dest:" << std::endl;
-    for(int i = 0; i < 3; i++){
-        std::cout << ret[i];
-    }
-    std::cout << std::endl;
     return ret;
 }
 
@@ -196,11 +191,6 @@ int* comp(string mnem){
         ret[5] = -1;
         ret[6] = -1;
     }
-    std::cout << "comp:" << std::endl;
-    for(int i = 0; i < 7; i++){
-        std::cout << ret[i];
-    }
-    std::cout << std::endl;
     return ret;
 }
 
@@ -243,10 +233,18 @@ int* jump(string mnem){
         ret[1] = -1;
         ret[2] = -1;
     }
-    std::cout << "jump:" << std::endl;
-    for(int i = 0; i < 3; i++){
-        std::cout << ret[i];
-    }
-    std::cout << std::endl;
     return ret;
+}
+
+int* sym_to_bin(string num){
+    int dec = std::stoi(num);
+    int* bin = new int[15];
+    std::fill_n(bin, 15, 0);
+    int i = 0;
+    while(dec > 0){
+        bin[14 - i] = dec % 2;
+        dec = dec / 2;
+        i++;
+    }
+    return bin;
 }

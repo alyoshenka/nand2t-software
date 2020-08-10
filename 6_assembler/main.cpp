@@ -22,8 +22,7 @@ int main(int cnt, char* args[]) {
         commandType cmdType = p.currentCommand();
         std::cout << "parsing " << p.getCurCmd() << std::endl;
         switch(cmdType){
-            case commandType::C_COMMAND:
-            {
+            case commandType::C_COMMAND:{
                 bin[0] = 1; // C
                 bin[1] = 1; // junk
                 bin[2] = 1; // junk
@@ -41,10 +40,14 @@ int main(int cnt, char* args[]) {
                 }
             }
                 break;
-            case commandType::A_COMMAND:
-                std::cout << "A cmd" << std::endl;
-                bin[15] = 0; // A
-                std::cout << "sym: " << p.symbol() << std::endl;
+            case commandType::A_COMMAND:{
+                bin[0] = 0; // A
+                string sym = p.symbol();
+                int* addr = sym_to_bin(sym);
+                for(int i = 0; i < 15; i++){
+                    bin[i + 1] = addr[i];
+                }
+            }
                 break;
             case commandType::L_COMMAND:
                 std::cout << "L cmd" << std::endl;
@@ -54,11 +57,15 @@ int main(int cnt, char* args[]) {
                 std::cout << "UNKNOWN COMMAND" << std::endl;
                 break;
         }
+
+        string line = "";
         for(int i = 0; i < 16; i++){
+            line.append(std::to_string(bin[i]));
             if(i % 4 == 0){std::cout << " ";}
             std::cout << bin[i];
         }
         std::cout << std::endl;
+        p.push(line);
         p.advance();
     }
 

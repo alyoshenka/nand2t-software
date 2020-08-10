@@ -20,7 +20,7 @@ parser::parser(char* fileName){
 
     string newName(fileName);
     int dotIdx = newName.find('.');
-    newName.replace(dotIdx, 4, ".hack");
+    newName.replace(dotIdx, 4, "_out.hack");
 
     std::cout << "opening file " << newName << " for writing" << std::endl;
     outFile.open(newName);
@@ -74,6 +74,7 @@ string parser::symbol(){
     sym.erase(std::remove(sym.begin(), sym.end(), '('), sym.end());
     sym.erase(std::remove(sym.begin(), sym.end(), ')'), sym.end());
     sym.erase(std::remove(sym.begin(), sym.end(), '@'), sym.end());
+
     return sym;
 }
 
@@ -108,5 +109,9 @@ string parser::jump(){
     int len = curCmd.length();
     string ret = curCmd.substr(idx, len - idx);
     return ret;
+}
+
+void parser::push(string line){
+    outFile << line + "\n";
 }
 
