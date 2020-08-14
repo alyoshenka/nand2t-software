@@ -1,9 +1,13 @@
-
 #include <string>
+#include <map>
+
 using std::string;
+using std::map;
 
 // Keeps a correspondence between symbolic labels and numeric addresses 
 class symbolTable {
+
+    map<string, int> table;
 
 public:
     // creates a new empty symbol table

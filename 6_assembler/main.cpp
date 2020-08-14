@@ -24,7 +24,7 @@ int main(int cnt, char* args[]) {
         switch(cmdType){
             case commandType::C_COMMAND:{
                 bin[0] = 1; // C
-                bin[1] = 1; // junk
+                bin[1] = 1; // junk    curCmd = curCmd.substr(start);
                 bin[2] = 1; // junk
 
                 int* c = comp(p.comp());

@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "commandType.h"
+#include "symbolTable.h"
 
 using std::string;
 using std::ifstream;
@@ -17,6 +18,10 @@ class parser{
     string curCmd;
     ifstream inFile;
     ofstream outFile;
+
+    symbolTable table;
+    int symAddr; // ()
+    int varAddr; // @
     
 public:
     // opens the input file and gets ready to use it
@@ -44,4 +49,6 @@ public:
     string jump();
     /* writes a given line to the output file */
     void push(string line);
+    /* adds the current symbol to the table */
+    void addCurrentSymbol();
 };
