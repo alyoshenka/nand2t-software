@@ -237,14 +237,13 @@ int* jump(string mnem){
     return ret;
 }
 
-int* sym_to_bin(string num){
-    int dec = std::stoi(num);
+int* int_to_bin(int num){
     int* bin = new int[15];
     std::fill_n(bin, 15, 0);
     int i = 0;
-    while(dec > 0){
-        bin[14 - i] = dec % 2;
-        dec = dec / 2;
+    while(num > 0){
+        bin[14 - i] = num % 2;
+        num = num / 2;
         i++;
     }
     return bin;

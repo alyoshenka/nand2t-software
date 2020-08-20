@@ -10,7 +10,7 @@ using std::string;
 parser::parser(char* fileName){
 
     curCmd = "";
-    symAddr = -1;
+    symAddr = 0;
     varAddr = 16; // initialize
 
     std::cout << "opening file " << fileName << " for reading" << std::endl;
@@ -22,7 +22,7 @@ parser::parser(char* fileName){
 
     string newName(fileName);
     int dotIdx = newName.find('.');
-    newName.replace(dotIdx, 4, "_out.hack");
+    newName.replace(dotIdx, 4, ".hack");
 
     std::cout << "opening file " << newName << " for writing" << std::endl;
     outFile.open(newName);
@@ -48,8 +48,14 @@ bool parser::hasMoreCommands(){
 void parser::advance(){
 
     getline(inFile, curCmd);
-    // strip whitespace
-    string whitespace = " ";
+    // strip inline comments
+    string comment = "/";
+    int com = curCmd.find_first_of(comment);
+    if(com != std::string::npos){
+        curCmd = curCmd.substr(0, com);
+    }
+    // strip whitespace  
+    string whitespace = " \n\t\r\f\v";
     int start = curCmd.find_first_not_of(whitespace);
     if(start != std::string::npos){
         curCmd = curCmd.substr(start);
@@ -63,8 +69,6 @@ void parser::advance(){
     if(curCmd[0] == '/' && curCmd[1] == '/' 
         || curCmd.empty() && !inFile.eof()){ 
             advance(); 
-    }else if(currentCommand() != commandType::L_COMMAND){
-        symAddr++;
     }
 
     return;
@@ -110,10 +114,9 @@ string parser::comp(){
         if(idx >= 0 && idx < curCmd.length()){
             ret = curCmd.substr(0, idx);
         }else{
-            std::cout << "COMP ERROR" << std::endl;
+            std::cout << "COMP ERROR: " << curCmd << std::endl;
         }
     }
-    
     return ret;
 }
 
@@ -144,24 +147,54 @@ void parser::push(string line){
 }
 
 void parser::addCurrentSymbol(){
-    if(curCmd[0] == '('){ // func
-        string sym = symbol();
+    string sym = symbol();
+    if(table.contains(sym)){
+        std::cout << "duplicate symbol: " << sym << std::endl;
+        return;
+    }
+    if(currentCommand() == commandType::L_COMMAND){ // func
+        std::cout << "adding " << sym << " at ROM[" << symAddr << "]" << std::endl;
         table.addEntry(sym, symAddr);
-        symAddr++;
-    }else if(curCmd[0] == '@'){ // var
-        string sym = symbol();
-        if(table.contains(sym)){ // check table
-            // do nothing(?)
-        }else if(false){ // check if number
-
+    }else if(currentCommand() == commandType::A_COMMAND){ // var
+        if(!isSymbol(sym)){ // check if number
+            std::cout << "invalid symbol: " << sym << std::endl;
         }
         else{
-            // add symbol
-            table.addEntry(sym, symAddr);
-            symAddr++;
+            // add variable
+            std::cout << "adding " << sym << " at RAM[" << varAddr << "]" << std::endl;
+            table.addEntry(sym, varAddr);
+            varAddr++;
         }
     }else{ // err
         std::cout << "SYM ERROR" << std::endl;
     }
 
+}
+
+bool parser::isSymbol(string sym){
+    try{
+        int i = std::stoi(sym);
+    }catch(std::invalid_argument){
+        return true;
+    }
+    return false;
+}
+
+int parser::getAddress(string sym){
+    if(isSymbol(sym)){ // address
+        return table.getAddress(sym);
+    }else{ // number
+        return std::stoi(sym);
+    }
+}
+
+void parser::resetFile(string fileName){
+    // BAD
+    inFile.close();
+    inFile.open(fileName);
+    advance();
+}
+
+void parser::incSym(){
+    symAddr++;
 }

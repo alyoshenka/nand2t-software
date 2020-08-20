@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include <string>
 #include <fstream>
@@ -51,4 +51,12 @@ public:
     void push(string line);
     /* adds the current symbol to the table */
     void addCurrentSymbol();
+    /* check if current symbol is not a number */
+    bool isSymbol(string sym);
+    /* returns the numerical address of a symbol or address */
+    int getAddress(string sym);
+    /* reset file handle to beginning */
+    void resetFile(string fileName);
+    /* increment symbol counter () */
+    void incSym();
 };

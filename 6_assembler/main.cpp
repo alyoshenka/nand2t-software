@@ -14,12 +14,44 @@ int main(int cnt, char* args[]) {
     parser p(inFile);
 
     int* bin = new int[16];
+    commandType cmdType;
 
+    std::cout << "first pass" << std::endl;
+    // read
     while(p.hasMoreCommands()){
-        // reset 
+        commandType cmdType = p.currentCommand();
+        std::cout << "parsing " << p.getCurCmd() << std::endl;
+        cmdType = p.currentCommand();
+        switch(cmdType){
+            case commandType::C_COMMAND:
+                // increment symbol counter
+                p.incSym();
+                break;
+            case commandType::A_COMMAND:
+                // do not add variable
+                // increment symbol counter
+                p.incSym();
+                break;
+            case commandType::L_COMMAND:
+                // add symbol
+                p.addCurrentSymbol();
+                // do not increment counter
+                break;
+            default:
+                std::cout << "COMMAND ERROR" << std::endl;
+                break;
+        }
+        p.advance();
+    }
+    p.resetFile(inFile);
+
+    std::cout << "\nsecond pass" << std::endl;
+    // write
+    while(p.hasMoreCommands()){
+        // reset bin
         std::fill_n(bin, 16, -1);
 
-        commandType cmdType = p.currentCommand();
+        cmdType = p.currentCommand();
         std::cout << "parsing " << p.getCurCmd() << std::endl;
         switch(cmdType){
             case commandType::C_COMMAND:{
@@ -31,6 +63,7 @@ int main(int cnt, char* args[]) {
                 int* d = dest(p.dest());
                 int* j = jump(p.jump());
 
+                // combine codes
                 for(int i = 0; i < 7; i++){
                     bin[i + 3] = c[i];
                 }
@@ -41,18 +74,23 @@ int main(int cnt, char* args[]) {
             }
                 break;
             case commandType::A_COMMAND:{
+                // check if var in table
+                // if not, add var to table
+                p.addCurrentSymbol();
+
                 bin[0] = 0; // A
                 string sym = p.symbol();
-                int* addr = sym_to_bin(sym);
+                int* addr = int_to_bin(p.getAddress(sym));
                 for(int i = 0; i < 15; i++){
                     bin[i + 1] = addr[i];
                 }
             }
                 break;
             case commandType::L_COMMAND:
+                // do nothing
                 std::cout << "L cmd" << std::endl;
-                // symbol table
-                break;
+                p.advance();
+                continue;
             default:
                 std::cout << "UNKNOWN COMMAND" << std::endl;
                 break;

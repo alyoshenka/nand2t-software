@@ -38,7 +38,7 @@ void symbolTable::addEntry(string sym, int addr){
 }
 
 bool symbolTable::contains(string sym){
-   return table.count(sym);
+    return table.count(sym) > 0;
 }
 
 int symbolTable::getAddress(string sym){
