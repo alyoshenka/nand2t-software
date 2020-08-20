@@ -2,16 +2,19 @@
 
 
 #include <string>
+#include <fstream>
 
 #include "commandType.h"
 
 using std::string;
+using std::ofstream;
 
 // translates VM commands into Hack assembly code
 class codeWriter {
+    ofstream outFile;
 public:
     // opens output file and gets ready to write to it
-    codeWriter(string outFile);
+    codeWriter(string fileName);
     // closes output file
     ~codeWriter();
     // translation of a new VM file is started

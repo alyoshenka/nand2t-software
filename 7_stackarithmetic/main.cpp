@@ -47,13 +47,32 @@ int main(int cnt, char* args[]){
         while(p.hasMoreCommands()){
             commandType t = p.currentCommand();
             if(t != commandType::C_RETURN){
-                // arg1
+                string arg1 = p.arg1();
+                // 3 arguments
                 if(t == commandType::C_PUSH 
                     || t == commandType::C_POP
                     || t == commandType::C_FUNCTION
                     || t == commandType::C_CALL){
-                    // arg2
+                    
+                    int arg2 = p.arg2();
+                    
+                    if(t == commandType::C_PUSH
+                        || t == commandType::C_POP){
+                        
+                        cw.writePushPop(t, arg1, arg2);
+                    }else{
+                        // write func/call
+                    }
+
+                }else{
+                    if(t == commandType::C_ARITHMETIC){
+                        cw.writeArithmetic(arg1);
+                    } else{
+                        // write other
+                    }
                 }
+            } else{
+                // write return
             }
 
             p.advance();

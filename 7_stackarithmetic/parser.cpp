@@ -85,7 +85,7 @@ string parser::arg1(){
         return curCmd.substr(l + 1, curCmd.length() - l);
     }
     // check
-    return curCmd.substr(l + 1, r - l);
+    return curCmd.substr(l + 1, r - l - 1);
 }
 
 int parser::arg2(){
