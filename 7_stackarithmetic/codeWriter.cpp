@@ -53,88 +53,89 @@ void codeWriter::writeArithmetic(string command){
             "M=0\n"; // clear
     }else if(command.compare("neg") == 0){
         line = 
-            "@SP\n"
-            "A=A-1\n"
-            "M=-M\n";
+            "@SP\n" // go to stack pointer
+            "A=M-1\n" // go to top value of stack
+            "M=-M\n"; // negate value
     }else if(command.compare("eq") == 0){
         // subtract and check if answer is 0
         line = 
-            "@SP\n"
-            "D=M-1\n"
-            "@SP\n"
-            "M=M-1\n"
-            "@SP\n"
-            "A=M-1\n"
-            "D=D-A\n"
-            "A=-1\n"
-            "D;JEQ\n";
-            "A=0\n"
-            "D;JNE\n"
-            "D=A\n"
-            "@SP\n"
-            "A=A-1\n"
-            "M=D\n";
+            "\n// EQ\n\n"
+
+            "// equality compare value\n"
+            "@eq_val // setup\n"
+            "// go to setup\n"
+            "@BEFORE_EQ // start\n"
+            "0;JMP\n // actually go"
+            "// equality function (true)\n"
+            "(IS_EQ)\n"
+            "   @eq_val // get value\n"
+            "   M=-1 // true\n"
+            "   @AFTER_EQ // post set function\n"
+            "   0;JMP\n"
+            "// equality function (false)\n"
+            "(NOT_EQ)\n"
+            "   @eq_val // get value\n"
+            "   M=0 // false\n"
+            "   @AFTER_EQ // post set function\n"
+            "   0;JMP\n"
+            "// setup function\n"
+            "(BEFORE_EQ)\n"
+            "   @SP // go to stack pointer\n"
+            "   M=M-1 // decrement value\n"
+            "   A=M // go to top of stack\n"
+            "   D=M // store value in D\n"
+            "   M=0 // clear value\n"
+            "   @SP // go to stack pointer\n"
+            "   A=M-1 // go to next value\n"
+            "   D=D-M // subtract\n"
+            "   @IS_EQ // set dest for true\n"
+            "   D;JEQ // jump if 0\n"
+            "   @NOT_EQ // set dest for false\n"
+            "   D;JNE // jump if not 0\n"
+            "// cleanup function\n"
+            "(AFTER_EQ) // after set value\n"
+            "   @eq_val // load return val\n"
+            "   D=M // store val\n"
+            "   @SP // go to stack pointer\n"
+            "   A=M-1 // go to top value\n"
+            "   M=D; // set value\n";
     }else if(command.compare("gt") == 0){
         // subtract, test > 0
-        line = 
-            "@SP\n"
-            "D=M-1\n"
-            "@SP\n"
-            "M=M-1\n"
-            "@SP\n"
-            "A=M-1\n"
-            "D=D-A\n"
-            "A=-1\n"
-            "D;JGT\n";
-            "A=0\n"
-            "D;JLE\n"
-            "D=A\n"
-            "@SP\n"
-            "A=A-1\n"
-            "M=D\n";
+        line = "";
     }else if(command.compare("lt") == 0){
         // subtract, test < 0
-        line = 
-            "@SP\n"
-            "D=M-1\n"
-            "@SP\n"
-            "M=M-1\n"
-            "@SP\n"
-            "A=M-1\n"
-            "D=D-A\n"
-            "A=-1\n"
-            "D;JLT\n";
-            "A=0\n"
-            "D;JGE\n"
-            "D=A\n"
-            "@SP\n"
-            "A=A-1\n"
-            "M=D\n";
+        line = "";
     }else if(command.compare("and") == 0){
         line = 
-            "@SP\n"
-            "A=A-1\n"
-            "D=M\n"
-            "@SP\n"
-            "M=M-1\n"
-            "@SP\n"
-            "A=A-1\n"
-            "M=M&D\n";
+            "@SP\n" // go to stack pointer
+            "M=M-1\n" // decrement value to get first number
+            "A=M\n" // go to stack
+            "D=M\n" // store first number
+            "@SP\n" // go to stack pointer
+            "M=M-1\n" // decrement value
+            "@SP\n" // go to stack pointer
+            "A=M\n" // go to stack
+            "M=M&D\n" // calculate value
+            "@SP\n" // go to stack pointer
+            "M=M+1\n"; // increment value
     }else if(command.compare("or") == 0){
         line = 
-            "@SP\n"
-            "A=A-1\n"
-            "D=M\n"
-            "@SP\n"
-            "M=M-1\n"
-            "@SP\n"
-            "A=A-1\n"
-            "M=M|D\n";
+            "@SP\n" // go to stack pointer
+            "M=M-1\n" // decrement value to get first number
+            "A=M\n" // go to stack
+            "D=M\n" // store first number
+            "@SP\n" // go to stack pointer
+            "M=M-1\n" // decrement value
+            "@SP\n" // go to stack pointer
+            "A=M\n" // go to stack
+            "M=M|D\n" // calculate value
+            "@SP\n" // go to stack pointer
+            "M=M+1\n"; // increment value
     }else if(command.compare("not") == 0){
         line = 
-            "@SP\n"
-            "A=A-1\n"
-            "M=!M\n";
+            "@SP\n" // go to stack pointer
+            "A=M-1\n" // go to top value of stack
+            "M=!M\n"; // bitwise negation
     } else{
         std::cout << "ERROR PARSING ARITHMETIC COMMAND" << std::endl;
         return;
@@ -174,6 +175,12 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
 }
 
 void codeWriter::close(){
+    // closing loop
+    outFile << 
+        "(END)\n"
+        "   @END\n"
+        "   0;JMP\n";
+
     std::cout << "closing output file" << std::endl;
     outFile.close();
 }
