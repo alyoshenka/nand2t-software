@@ -14,6 +14,48 @@ codeWriter::codeWriter(string fileName){
         "@SP\n" // import SP(0)
         "M=D\n"; // set mem to 256
     outFile << line;
+
+    // eq function
+    // subtract and check if answer is 0
+        line = 
+            "\n// EQ\n\n"
+
+            "// equality compare value\n"
+            "@eq_val // setup\n"
+            "// equality function (true)\n"
+            "(IS_EQ)\n"
+            "   @eq_val // get value\n"
+            "   M=-1 // true\n"
+            "   @AFTER_EQ // post set function\n"
+            "   0;JMP\n"
+            "// equality function (false)\n"
+            "(NOT_EQ)\n"
+            "   @eq_val // get value\n"
+            "   M=0 // false\n"
+            "   @AFTER_EQ // post set function\n"
+            "   0;JMP\n"
+            "// setup function\n"
+            "(BEFORE_EQ)\n"
+            "   @SP // go to stack pointer\n"
+            "   M=M-1 // decrement value\n"
+            "   A=M // go to top of stack\n"
+            "   D=M // store value in D\n"
+            "   M=0 // clear value\n"
+            "   @SP // go to stack pointer\n"
+            "   A=M-1 // go to next value\n"
+            "   D=D-M // subtract\n"
+            "   @IS_EQ // set dest for true\n"
+            "   D;JEQ // jump if 0\n"
+            "   @NOT_EQ // set dest for false\n"
+            "   D;JNE // jump if not 0\n"
+            "// cleanup function\n"
+            "(AFTER_EQ) // after set value\n"
+            "   @eq_val // load return val\n"
+            "   D=M // store val\n"
+            "   @SP // go to stack pointer\n"
+            "   A=M-1 // go to top value\n"
+            "   M=D; // set value\n";
+        outFile << line;
 }
 
 codeWriter::~codeWriter(){
@@ -57,54 +99,15 @@ void codeWriter::writeArithmetic(string command){
             "A=M-1\n" // go to top value of stack
             "M=-M\n"; // negate value
     }else if(command.compare("eq") == 0){
-        // subtract and check if answer is 0
         line = 
-            "\n// EQ\n\n"
-
-            "// equality compare value\n"
-            "@eq_val // setup\n"
-            "// go to setup\n"
-            "@BEFORE_EQ // start\n"
-            "0;JMP\n // actually go"
-            "// equality function (true)\n"
-            "(IS_EQ)\n"
-            "   @eq_val // get value\n"
-            "   M=-1 // true\n"
-            "   @AFTER_EQ // post set function\n"
-            "   0;JMP\n"
-            "// equality function (false)\n"
-            "(NOT_EQ)\n"
-            "   @eq_val // get value\n"
-            "   M=0 // false\n"
-            "   @AFTER_EQ // post set function\n"
-            "   0;JMP\n"
-            "// setup function\n"
-            "(BEFORE_EQ)\n"
-            "   @SP // go to stack pointer\n"
-            "   M=M-1 // decrement value\n"
-            "   A=M // go to top of stack\n"
-            "   D=M // store value in D\n"
-            "   M=0 // clear value\n"
-            "   @SP // go to stack pointer\n"
-            "   A=M-1 // go to next value\n"
-            "   D=D-M // subtract\n"
-            "   @IS_EQ // set dest for true\n"
-            "   D;JEQ // jump if 0\n"
-            "   @NOT_EQ // set dest for false\n"
-            "   D;JNE // jump if not 0\n"
-            "// cleanup function\n"
-            "(AFTER_EQ) // after set value\n"
-            "   @eq_val // load return val\n"
-            "   D=M // store val\n"
-            "   @SP // go to stack pointer\n"
-            "   A=M-1 // go to top value\n"
-            "   M=D; // set value\n";
+            "@BEFORE_EQ // equality check function\n"
+            "0;JMP\n";
     }else if(command.compare("gt") == 0){
         // subtract, test > 0
-        line = "";
+        line = "\n";
     }else if(command.compare("lt") == 0){
         // subtract, test < 0
-        line = "";
+        line = "\n";
     }else if(command.compare("and") == 0){
         line = 
             "@SP\n" // go to stack pointer
@@ -142,6 +145,7 @@ void codeWriter::writeArithmetic(string command){
     }
 
     // write to file
+    outFile << "\n";
     outFile << line;
 }
 
@@ -155,22 +159,25 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
             
         string idx = std::to_string(index);
         // push index to stack
-        line = "@";
+        line = 
+            "// import number constant\n"
+            "@";
         line.append(idx);
-        line.append(
-            "\n" // import number constant
-            "D=A\n" // set register D to number
-            "@SP\n" // get stack value as address
-            "A=M\n" // go to addres (top of stack)
-            "M=D\n" // set top of stack to number
-            "@SP\n" // get SP address
-            "M=M+1\n" // increment stack pointer
+        line.append( 
+            "\n"          
+            "D=A // set register D to number\n"
+            "@SP // get stack value as address\n"
+            "A=M // go to addres (top of stack)\n"
+            "M=D // set top of stack to number\n"
+            "@SP // get SP address\n"
+            "M=M+1 // increment stack pointer\n"
         );
     } else{
         std::cout << "ERROR WRITING PUSHPOP" << std::endl;
         return;
     }
 
+    outFile << "\n";
     outFile << line;
 }
 
