@@ -1,12 +1,50 @@
-@256
-D=A
-@SP
-M=D
+// initialize SP to 256
+@256 // import 256
+D=A // set D to 256
+@SP // import SP(0)
+M=D // set mem to 256
 
-// EQ
+// initialize variables
+@cur_func // current function, NO reset
+@line_num // line function couter, DOES reset
+@push_val // the pushed value
 
-// equality compare value
-@eq_val // setup
+@MAIN
+0;JMP // start program
+
+(ADD)
+   @SP // go to stack pointer
+   M=M-1 // decrement stack
+   A=M // go to top of stack
+   D=M // store top value
+   A=A-1 // get address of next value
+   D=D+M // add
+   M=D // store
+   A=A+1 // get top value
+   M=0 // clear
+   @MAIN
+   0;JMP // return control to main
+
+(SUB)
+   @SP // go to stack pointer
+   M=M-1 // decrement stack
+   A=M // go to top of stack
+   D=M // store top value
+   A=A-1 // get address of next value
+   D=D-M // sub
+   M=D // store
+   A=A+1 // get top value
+   M=0 // clear
+   @MAIN
+   0;JMP // return control to main
+
+(NEG)
+   @SP // go to stack pointer
+   A=M-1 // go to top value of stack
+   M=-M // negate value
+   @MAIN
+   0;JMP // return control to main
+
 // equality function (true)
 (IS_EQ)
    @eq_val // get value
@@ -20,7 +58,7 @@ M=D
    @AFTER_EQ // post set function
    0;JMP
 // setup function
-(BEFORE_EQ)
+(EQ)
    @SP // go to stack pointer
    M=M-1 // decrement value
    A=M // go to top of stack
@@ -40,286 +78,620 @@ M=D
    @SP // go to stack pointer
    A=M-1 // go to top value
    M=D; // set value
+   @MAIN
+   0;JMP // return control to main
 
-// import number constant
-@17
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+(GT)
+   @MAIN
+   0;JMP // return control to main
 
-// import number constant
-@17
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+(LT)
+   @MAIN
+   0;JMP // return control to main
 
-@BEFORE_EQ // equality check function
-0;JMP
+(AND)
+   @SP // go to stack pointer
+   M=M-1 // decrement value to get first number
+   A=M // go to stack
+   D=M // store first number
+   @SP // go to stack pointer
+   M=M-1 // decrement value
+   @SP // go to stack pointer
+   A=M // go to stack
+   M=M&D // calculate value
+   @SP // go to stack pointer
+   M=M+1 // increment value;
+   @MAIN
+   0;JMP // return control to main
 
-// import number constant
-@17
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+(OR)
+   @SP // go to stack pointer
+   M=M-1 // decrement value to get first number
+   A=M // go to stack
+   D=M // store first number
+   @SP // go to stack pointer
+   M=M-1 // decrement value
+   @SP // go to stack pointer
+   A=M // go to stack
+   M=M|D // calculate value
+   @SP // go to stack pointer
+   M=M+1 // increment value
+   @MAIN
+   0;JMP // return control to main
 
-// import number constant
-@16
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+(NOT)
+   @SP // go to stack pointer
+   A=M-1 // go to top value of stack
+   M=!M // bitwise negation
+   @MAIN
+   0;JMP // return control to main
 
-@BEFORE_EQ // equality check function
-0;JMP
+// main function loop
+(MAIN)
+   @cur_func
+   M=M+1 // increment
+   @line_num
+   M=0 // reset line counter
 
-// import number constant
-@16
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @17
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-// import number constant
-@17
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
-@BEFORE_EQ // equality check function
-0;JMP
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@892
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @17
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-// import number constant
-@891
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @EQ
+   D;JEQ
 
-// import number constant
-@891
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@892
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @17
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@891
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @16
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-// import number constant
-@891
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @EQ
+   D;JEQ
 
-// import number constant
-@32767
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@32766
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @16
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@32766
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @17
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-// import number constant
-@32767
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @EQ
+   D;JEQ
 
-// import number constant
-@32766
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@32766
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @892
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@57
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @891
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-// import number constant
-@31
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
-// import number constant
-@53
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @line_num
+   M=M+1 // increment
 
-@SP
-M=M-1
-A=M
-D=M
-A=A-1
-D=D+M
-M=D
-A=A+1
-M=0
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @LT
+   D;JEQ
 
-// import number constant
-@112
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   @line_num
+   M=M+1 // increment
 
-@SP
-M=M-1
-A=M
-D=M
-A=A-1
-D=D-M
-M=D
-A=A+1
-M=0
+   // import number constant
+   @891
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-@SP
-A=M-1
-M=-M
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-@SP
-A=M
-M=M&D
-@SP
-M=M+1
+   @line_num
+   M=M+1 // increment
 
-// import number constant
-@82
-D=A // set register D to number
-@SP // get stack value as address
-A=M // go to addres (top of stack)
-M=D // set top of stack to number
-@SP // get SP address
-M=M+1 // increment stack pointer
+   // import number constant
+   @892
+   D=M // store address as value
+   @push_val
+   M=D // set value
 
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-@SP
-A=M
-M=M|D
-@SP
-M=M+1
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
 
-@SP
-A=M-1
-M=!M
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @LT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @LT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32767
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32767
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+    @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @57
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @31
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @53
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @ADD
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @112
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @SUB
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @NEG
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @AND
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @82
+   D=M // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @OR
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @NOT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @END
+   0;JMP // finish 
+
 (END)
    @END
    0;JMP

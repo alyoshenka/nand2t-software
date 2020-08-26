@@ -50,19 +50,6 @@ namespace functions{
         "   M=-M // negate value\n";
 
     const string eq = 
-        "// equality function (true)\n"
-        "(IS_EQ)\n"
-        "   @eq_val // get value\n"
-        "   M=-1 // true\n"
-        "   @AFTER_EQ // post set function\n"
-        "   0;JMP\n"
-        "// equality function (false)\n"
-        "(NOT_EQ)\n"
-        "   @eq_val // get value\n"
-        "   M=0 // false\n"
-        "   @AFTER_EQ // post set function\n"
-        "   0;JMP\n"
-        "// setup function\n"
         "(EQ)\n"
         "   @SP // go to stack pointer\n"
         "   M=M-1 // decrement value\n"
@@ -72,19 +59,33 @@ namespace functions{
         "   @SP // go to stack pointer\n"
         "   A=M-1 // go to next value\n"
         "   D=D-M // subtract\n"
-        "   @IS_EQ // set dest for true\n"
+        "   @TRUE // set dest for true\n"
         "   D;JEQ // jump if 0\n"
-        "   @NOT_EQ // set dest for false\n"
+        "   @FALSE // set dest for false\n"
         "   D;JNE // jump if not 0\n"
-        "// cleanup function\n"
-        "(AFTER_EQ) // after set value\n"
-        "   @eq_val // load return val\n"
-        "   D=M // store val\n"
+        "(TRUE)\n"
+        "   @true\n"
+        "   D=M // get true value\n"
+        "   @eq_val\n"
+        "   M=D // store value\n"
+        "   @AFTER_SET\n"
+        "   0;JMP // return control\n"
+        "(FALSE)\n"
+        "   @false\n"
+        "   D=M // get false value\n"
+        "   @eq_val\n"
+        "   M=D // store value\n"
+        "   @AFTER_SET\n"
+        "   0;JMP // return control\n"
+        "(AFTER_SET)\n"
+        "   @eq_val\n"
+        "   D=M // take value\n"
         "   @SP // go to stack pointer\n"
         "   A=M-1 // go to top value\n"
         "   M=D; // set value\n";
 
-    const string gt = "(GT)\n";
+    const string gt = 
+        "(GT)\n";
 
     const string lt = "(LT)\n";
 
@@ -100,7 +101,9 @@ namespace functions{
         "   A=M // go to stack\n"
         "   M=M&D // calculate value\n"
         "   @SP // go to stack pointer\n"
-        "   M=M+1 // increment value;\n";
+        "   M=M+1 // increment value;\n"
+        "   A=M // go to top of stack\n"
+        "   M=0 // clear value\n";
 
     const string or_func = 
         "(OR)\n"
@@ -122,7 +125,6 @@ namespace functions{
         "   A=M-1 // go to top value of stack\n"
         "   M=!M // bitwise negation\n";
 
-
     const string push =
         "(PUSH)\n"  
         "   @push_val\n"        
@@ -133,7 +135,12 @@ namespace functions{
         "   @SP // get SP address\n"
         "   M=M+1 // increment stack pointer\n";
 
+    const string pop =
+        "(POP)\n";
+
     const string ret =
+        "   @cur_func\n"
+        "   M=M+1 // increment\n"
         "   @MAIN\n"
         "   0;JMP // return control to main\n";
 

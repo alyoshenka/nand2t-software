@@ -1,11 +1,29 @@
 push constant 1
-push constant 1 
-eq
-
-push constant 1
 push constant 1
 add
 
 push constant 1
-push constant 1
+push constant 2
 sub
+
+push constant 1
+neg
+
+push constant 2
+push constant 2
+eq
+
+// gt
+
+// lt
+
+push constant 1
+push constant 1
+and
+
+push constant 1
+push constant 1
+or
+
+push constant 1
+not

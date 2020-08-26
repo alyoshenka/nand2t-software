@@ -18,7 +18,12 @@ codeWriter::codeWriter(string fileName){
         "// initialize variables\n"
         "@cur_func // current function, NO reset\n"
         "@line_num // line function couter, DOES reset\n"
+        "@eq_val // value of equality check\n"
         "@push_val // the pushed value\n"
+        "@true\n"
+        "M=-1 // set true constant\n"
+        "@false\n"
+        "M=0 // set false constant\n"
         "\n"
         "@MAIN\n"
         "0;JMP // start program\n";
@@ -60,14 +65,20 @@ codeWriter::codeWriter(string fileName){
     outFile << "\n";
     outFile << line;
     outFile << functions::ret;
+    line = functions::push;
+    outFile << "\n";
+    outFile << line;
+    outFile << functions::ret;
+    line = functions::pop;
+    outFile << "\n";
+    outFile << line;
+    outFile << functions::ret;
 
     // main function
     line = 
         "\n"
         "// main function loop\n"
         "(MAIN)\n"
-        "   @cur_func\n"
-        "   M=M+1 // increment\n"
         "   @line_num\n"
         "   M=0 // reset line counter\n";
     outFile << line;
@@ -137,7 +148,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
         line.append(idx);
         line.append(
             "\n"
-            "   D=M // store address as value\n"
+            "   D=A // store address as value\n"
             "   @push_val\n"
             "   M=D // set value\n"
         );
