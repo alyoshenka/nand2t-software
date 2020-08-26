@@ -28,4 +28,6 @@ public:
     void writePushPop(commandType command, string segment, int index);
     // closes the output file
     void close();
+    // run current function? string
+    string runCurFuncStr();
 };

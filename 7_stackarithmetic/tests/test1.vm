@@ -1,3 +1,11 @@
 push constant 1
 push constant 1 
 eq
+
+push constant 1
+push constant 1
+add
+
+push constant 1
+push constant 1
+sub
