@@ -200,7 +200,7 @@ M=0 // set false constant
    M=0 // reset line counter
 
    // import number constant
-   @1
+   @17
    D=A // store address as value
    @push_val
    M=D // set value
@@ -217,7 +217,7 @@ M=0 // set false constant
    M=M+1 // increment
 
    // import number constant
-   @1
+   @17
    D=A // store address as value
    @push_val
    M=D // set value
@@ -245,7 +245,7 @@ M=0 // set false constant
    M=M+1 // increment
 
    // import number constant
-   @1
+   @17
    D=A // store address as value
    @push_val
    M=D // set value
@@ -262,7 +262,232 @@ M=0 // set false constant
    M=M+1 // increment
 
    // import number constant
-   @2
+   @16
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @EQ
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @16
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @17
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @EQ
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @892
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @LT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @892
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @LT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @891
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @LT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32767
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
    D=A // store address as value
    @push_val
    M=D // set value
@@ -290,7 +515,7 @@ M=0 // set false constant
    M=M+1 // increment
 
    // import number constant
-   @2
+   @32766
    D=A // store address as value
    @push_val
    M=D // set value
@@ -307,7 +532,7 @@ M=0 // set false constant
    M=M+1 // increment
 
    // import number constant
-   @1
+   @32767
    D=A // store address as value
    @push_val
    M=D // set value
@@ -328,7 +553,164 @@ M=0 // set false constant
    @line_num
    A=M // store value
    D=D-A // check to run next func
-   @LT
+   @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @32766
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @57
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @31
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @53
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @ADD
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @112
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @SUB
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @NEG
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @AND
    D;JEQ
 
    @line_num

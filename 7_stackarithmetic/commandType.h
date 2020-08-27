@@ -85,9 +85,34 @@ namespace functions{
         "   M=D; // set value\n";
 
     const string gt = 
-        "(GT)\n";
+        "(GT)\n"
+        "   @SP // go to stack pointer\n"
+        "   M=M-1 // decrement value\n"
+        "   A=M // go to top of stack\n"
+        "   D=M // store value in D\n"
+        "   M=0 // clear value\n"
+        "   @SP // go to stack pointer\n"
+        "   A=M-1 // go to next value\n"
+        "   D=D-M // subtract\n"
+        "   @TRUE // set dest for true\n"
+        "   D;JGT // jump if 0\n"
+        "   @FALSE // set dest for false\n"
+        "   D;JLE // jump if not 0\n";
 
-    const string lt = "(LT)\n";
+    const string lt = 
+        "(LT)\n"
+        "   @SP // go to stack pointer\n"
+        "   M=M-1 // decrement value\n"
+        "   A=M // go to top of stack\n"
+        "   D=M // store value in D\n"
+        "   M=0 // clear value\n"
+        "   @SP // go to stack pointer\n"
+        "   A=M-1 // go to next value\n"
+        "   D=D-M // subtract\n"
+        "   @TRUE // set dest for true\n"
+        "   D;JLT // jump if 0\n"
+        "   @FALSE // set dest for false\n"
+        "   D;JGE // jump if not 0\n";
 
     const string and_func = 
         "(AND)\n"

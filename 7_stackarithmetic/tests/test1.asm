@@ -7,12 +7,12 @@ M=D // set mem to 256
 // initialize variables
 @cur_func // current function, NO reset
 @line_num // line function couter, DOES reset
+@eq_val // value of equality check
 @push_val // the pushed value
 @true
-M=-1 set true constant
+M=-1 // set true constant
 @false
-M=0
- // set false constant
+M=0 // set false constant
 
 @MAIN
 0;JMP // start program
@@ -65,10 +65,26 @@ M=0
    @SP // go to stack pointer
    A=M-1 // go to next value
    D=D-M // subtract
-   @true // set dest for true
+   @TRUE // set dest for true
    D;JEQ // jump if 0
-   @false // set dest for false
+   @FALSE // set dest for false
    D;JNE // jump if not 0
+(TRUE)
+   @true
+   D=M // get true value
+   @eq_val
+   M=D // store value
+   @AFTER_SET
+   0;JMP // return control
+(FALSE)
+   @false
+   D=M // get false value
+   @eq_val
+   M=D // store value
+   @AFTER_SET
+   0;JMP // return control
+(AFTER_SET)
+   @eq_val
    D=M // take value
    @SP // go to stack pointer
    A=M-1 // go to top value
@@ -79,12 +95,36 @@ M=0
    0;JMP // return control to main
 
 (GT)
+   @SP // go to stack pointer
+   M=M-1 // decrement value
+   A=M // go to top of stack
+   D=M // store value in D
+   M=0 // clear value
+   @SP // go to stack pointer
+   A=M-1 // go to next value
+   D=D-M // subtract
+   @TRUE // set dest for true
+   D;JGT // jump if 0
+   @FALSE // set dest for false
+   D;JLE // jump if not 0
    @cur_func
    M=M+1 // increment
    @MAIN
    0;JMP // return control to main
 
 (LT)
+   @SP // go to stack pointer
+   M=M-1 // decrement value
+   A=M // go to top of stack
+   D=M // store value in D
+   M=0 // clear value
+   @SP // go to stack pointer
+   A=M-1 // go to next value
+   D=D-M // subtract
+   @TRUE // set dest for true
+   D;JLT // jump if 0
+   @FALSE // set dest for false
+   D;JGE // jump if not 0
    @cur_func
    M=M+1 // increment
    @MAIN
@@ -317,6 +357,96 @@ M=0
    A=M // store value
    D=D-A // check to run next func
    @EQ
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @1
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @2
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @GT
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @2
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   // import number constant
+   @1
+   D=A // store address as value
+   @push_val
+   M=D // set value
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @PUSH
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @LT
    D;JEQ
 
    @line_num

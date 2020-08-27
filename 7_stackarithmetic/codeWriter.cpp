@@ -108,11 +108,9 @@ void codeWriter::writeArithmetic(string command){
     }else if(command.compare("eq") == 0){
         line = "   @EQ\n";
     }else if(command.compare("gt") == 0){
-        // subtract, test > 0
-        line = "    @GT\n";
+        line = "   @GT\n";
     }else if(command.compare("lt") == 0){
-        // subtract, test < 0
-        line = "    @LT\n";
+        line = "   @LT\n";
     }else if(command.compare("and") == 0){
         line = "   @AND\n";
     }else if(command.compare("or") == 0){

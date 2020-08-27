@@ -13,9 +13,13 @@ push constant 2
 push constant 2
 eq
 
-// gt
+push constant 1
+push constant 2
+gt
 
-// lt
+push constant 2
+push constant 1
+lt
 
 push constant 1
 push constant 1
