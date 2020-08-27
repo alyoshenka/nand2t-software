@@ -38,7 +38,7 @@ M=0 // set false constant
    A=M // go to top of stack
    D=M // store top value
    A=A-1 // get address of next value
-   D=D-M // sub
+   D=M-D // sub
    M=D // store
    A=A+1 // get top value
    M=0 // clear
@@ -102,7 +102,7 @@ M=0 // set false constant
    M=0 // clear value
    @SP // go to stack pointer
    A=M-1 // go to next value
-   D=D-M // subtract
+   D=M-D // subtract
    @TRUE // set dest for true
    D;JGT // jump if 0
    @FALSE // set dest for false
@@ -120,7 +120,7 @@ M=0 // set false constant
    M=0 // clear value
    @SP // go to stack pointer
    A=M-1 // go to next value
-   D=D-M // subtract
+   D=M-D // subtract
    @TRUE // set dest for true
    D;JLT // jump if 0
    @FALSE // set dest for false
