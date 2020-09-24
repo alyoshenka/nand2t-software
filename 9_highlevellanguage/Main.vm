@@ -1,0 +1,104 @@
+function Main.main 8
+push constant 0
+pop local 0
+push constant 140
+pop local 1
+push constant 0
+pop local 2
+push constant 87
+pop local 3
+push constant 83
+pop local 4
+push constant 65
+pop local 5
+push constant 68
+pop local 6
+call CircGame.new 0
+pop local 7
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+label WHILE_EXP0
+push local 0
+push local 1
+eq
+not
+not
+if-goto WHILE_END0
+call Screen.clearScreen 0
+pop temp 0
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 0
+eq
+not
+push local 0
+push local 2
+eq
+not
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push local 3
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 7
+call CircGame.incSpeed 1
+pop temp 0
+label IF_FALSE1
+push local 0
+push local 4
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 7
+call CircGame.decSpeed 1
+pop temp 0
+label IF_FALSE2
+push local 0
+push local 5
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 7
+call CircGame.decObjects 1
+pop temp 0
+label IF_FALSE3
+push local 0
+push local 6
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 7
+call CircGame.incObjects 1
+pop temp 0
+label IF_FALSE4
+label IF_FALSE0
+push local 0
+pop local 2
+push local 7
+push constant 1
+call CircGame.update 2
+pop temp 0
+push local 7
+call CircGame.draw 1
+pop temp 0
+push constant 200
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 7
+call CircGame.dispose 1
+pop temp 0
+push constant 0
+return

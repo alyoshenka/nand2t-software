@@ -1,0 +1,17 @@
+// inline comment
+while(count <= 100){ /** some loop */
+
+    /* this is a comment
+    this is more comment */
+
+    var int i;
+    let i = 5;
+
+    var String _thing;
+    let _thing = String.new("thing");
+
+    count++ ;
+    // body of while continues
+}
+
+/* test end comment / / // */

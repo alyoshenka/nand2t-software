@@ -1,0 +1,9 @@
+push constant 120
+push constant 121
+push constant 122
+push constant 123
+
+pop that 0
+pop this 0
+pop argument 0
+pop local 0

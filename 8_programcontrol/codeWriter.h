@@ -31,4 +31,19 @@ public:
     void writePushPop(commandType command, string segment, int index);
     // closes the output file
     void close();
+    /* writes assembly code that effects the VM initialization
+        this code must be placed at the beginning of the output file */
+    void writeInit();
+    // writes assembly code that effects the label command
+    void writeLabel(string label);
+    // writes assembly code that effects the goto command
+    void writeGoto(string label);
+    // writes assembly code that effects the if-goto command
+    void writeIf(string label);
+    // writes assembly code that effects the call command
+    void writeCall(string label, int numArgs);
+    // writes assembly code that effects the return command
+    void writeReturn();
+    // writes assembly code that effects the function command
+    void writeFunction(string label, int numLocals);
 };

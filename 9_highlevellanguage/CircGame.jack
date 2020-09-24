@@ -1,0 +1,109 @@
+class CircGame{
+
+    field int speed; // object speed
+    field int speedStep; // amount of speed increase per step
+    field int size; // object size
+    field int objectCnt; // number of objects
+    field int maxObjects; // max number of objects allowed
+    field int maxSpeed; // max speed allowed       
+    field int frameTime; // time between loops
+
+    field Array objects;
+
+    constructor CircGame new(){
+
+        let speed = 5;
+        let size = 10;
+        let objectCnt = 0;
+        let maxObjects = 5;
+        let maxSpeed = 10;
+        let frameTime = 50; // 20 fps
+
+        let objects = Array.new(maxObjects);
+
+        return this;
+    }
+
+    method void dispose(){
+        // get rid of all objects
+        var Square curObj;
+
+        let objectCnt = objectCnt - 1;
+
+        while(objectCnt > 0 | objectCnt = 0){
+            let curObj = objects[objectCnt];
+            do curObj.dispose();
+            let objectCnt = objectCnt - 1;
+        }
+
+        do objects.dispose();
+
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void update(int dt){
+        var int cnt;
+        var Square obj;
+        let cnt = objectCnt;
+        while(cnt > 0){
+            let obj = objects[cnt - 1];
+            do obj.update(speed * dt, speed * dt);
+            let cnt = cnt - 1;
+        }
+        return;
+    }
+
+    method void draw(){
+
+        var int cnt;
+        var Square obj;
+
+        let cnt = objectCnt;
+
+        while(cnt > 0){
+            let obj = objects[cnt - 1];
+            do obj.draw();
+            let cnt = cnt - 1;
+        }
+        return;
+    }
+
+    method void incSpeed(){
+        var int newSpeed;
+        let newSpeed = Math.min(speed, speed + speedStep);
+        let speed = newSpeed;
+        return;
+    }
+
+    method void decSpeed(){
+        let speed = Math.max(0, speed + speedStep);
+        return;
+    }
+
+    method void incObjects(){
+        var Square obj;
+
+        if(objectCnt = maxObjects | objectCnt > maxObjects){
+            return;
+        }
+
+        let obj = Square.new(0, 0, size);
+        let objects[objectCnt] = obj;
+        let objectCnt = objectCnt + 1;
+
+        return;
+    }
+
+    method void decObjects(){
+        var Square obj;
+        if(objectCnt = 0){
+            return;
+        }
+
+        let obj = objects[objectCnt - 1];
+        do obj.dispose();
+        let objectCnt = objectCnt - 1;
+        return;
+    }
+}

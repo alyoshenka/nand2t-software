@@ -233,7 +233,7 @@ M=0 // set false constant
    @line_num
    M=0 // reset line counter
 
-   @17 // import number constant
+   @3030 // import number constant
    D=A
    @pp_val
    M=D // set
@@ -248,7 +248,24 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
-   @17 // import number constant
+   @THIS
+   D=A
+   @0 // import number constant
+   D=D+A // add offset
+   @pp_addr
+   M=D // set value
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @POP
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @3040 // import number constant
    D=A
    @pp_val
    M=D // set
@@ -263,18 +280,24 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
+   @THIS
+   D=A
+   @1 // import number constant
+   D=D+A // add offset
+   @pp_addr
+   M=D // set value
    @cur_func
    D=M // store value
    @line_num
    A=M // store value
    D=D-A // check to run next func
-   @EQ
+   @POP
    D;JEQ
 
    @line_num
    M=M+1 // increment
 
-   @17 // import number constant
+   @32 // import number constant
    D=A
    @pp_val
    M=D // set
@@ -289,7 +312,24 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
-   @16 // import number constant
+    @THIS
+   D=M // base of segment
+   @2 // import index
+   D=D+A // calc RAM address
+   @pp_addr
+   M=D // set address
+   @cur_func
+   D=M // store value
+   @line_num
+   A=M // store value
+   D=D-A // check to run next func
+   @POP
+   D;JEQ
+
+   @line_num
+   M=M+1 // increment
+
+   @46 // import number constant
    D=A
    @pp_val
    M=D // set
@@ -304,21 +344,30 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
+    @THAT
+   D=M // base of segment
+   @6 // import index
+   D=D+A // calc RAM address
+   @pp_addr
+   M=D // set address
    @cur_func
    D=M // store value
    @line_num
    A=M // store value
    D=D-A // check to run next func
-   @EQ
+   @POP
    D;JEQ
 
    @line_num
    M=M+1 // increment
 
-   @16 // import number constant
-   D=A
+   @THIS
+   D=A // store address
+   @0 // import index
+   A=D+A // offset from base
+   D=M // save val
    @pp_val
-   M=D // set
+   M=D // set val
    @cur_func
    D=M // store value
    @line_num
@@ -330,312 +379,13 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
-   @17 // import number constant
-   D=A
+   @THIS
+   D=A // store address
+   @1 // import index
+   A=D+A // offset from base
+   D=M // save val
    @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @EQ
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @892 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @892 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32767 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32767 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @57 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @31 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @53 // import number constant
-   D=A
-   @pp_val
-   M=D // set
+   M=D // set val
    @cur_func
    D=M // store value
    @line_num
@@ -658,10 +408,13 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
-   @112 // import number constant
-   D=A
+   @THIS
+   D=M // store argument base
+   @2 // import index
+   A=D+A // offset from base
+   D=M // save val
    @pp_val
-   M=D // set
+   M=D // set val
    @cur_func
    D=M // store value
    @line_num
@@ -684,32 +437,13 @@ M=0 // set false constant
    @line_num
    M=M+1 // increment
 
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @NEG
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @AND
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @82 // import number constant
-   D=A
+   @THAT
+   D=M // store argument base
+   @6 // import index
+   A=D+A // offset from base
+   D=M // save val
    @pp_val
-   M=D // set
+   M=D // set val
    @cur_func
    D=M // store value
    @line_num
@@ -726,18 +460,7 @@ M=0 // set false constant
    @line_num
    A=M // store value
    D=D-A // check to run next func
-   @OR
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @NOT
+   @ADD
    D;JEQ
 
    @line_num

@@ -9,7 +9,7 @@
 				"-g",
 				"${fileDirname}/**.cpp",
 				"-o",
-				"${fileDirname}\\main.exe"
+				"${fileDirname}\\JackAnalyzer.exe"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
@@ -25,8 +25,8 @@
 		{
 			"type": "shell",
 			"label": "Run main executable",
-			"command": "${workspaceFolder}\\main.exe",
-			"args": ["MemoryAccess/PointerTest/PointerTest.vm"],
+			"command": "${workspaceFolder}\\JackAnalyzer.exe",
+			"args": [ "ExpressionLessSquare/Main.jack" ],
 			"problemMatcher": []
 		}
 	]

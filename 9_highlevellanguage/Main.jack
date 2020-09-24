@@ -1,0 +1,59 @@
+class Main{
+    function void main(){
+
+        var char key; // current key being pressed
+        var char esc; // escape char
+        var char prevKey;
+
+        // arrow vars
+        var char up;    // faster
+        var char down;  // slower
+        var char left;  // less 
+        var char right; // more
+
+        var CircGame game;
+
+        let key = 0;
+        let esc = 140; // constant
+        let prevKey = 0;
+
+        let up=87;
+        let down = 83;
+        let left = 65;
+        let right = 68;
+
+        let game = CircGame.new();
+
+        do Screen.setColor(true); // set to black            
+
+        // game loop
+        while(~(key = esc)){
+            do Screen.clearScreen();
+
+            let key = Keyboard.keyPressed();
+            // if new key
+            if(~(key = 0) & ~(key = prevKey)){
+                if(key = up){
+                    do game.incSpeed();
+                }
+                if(key = down){
+                    do game.decSpeed();
+                }
+                if(key = left){
+                    do game.decObjects();
+                }
+                if(key = right){
+                    do game.incObjects();
+                }
+            }
+            let prevKey = key;
+
+            do game.update(1);
+            do game.draw();
+            do Sys.wait(200);
+        }
+       
+        do game.dispose(); 
+        return;
+    }
+}

@@ -1,0 +1,68 @@
+class Square{
+    field int r; // radius
+    field int x;
+    field int y;
+
+    constructor Square new(int _x, int _y, int _r){
+        let r = _r;
+        let x = _x;
+        let y = _y;
+        return this;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void update(int dX, int dY){
+        let x = x + dX;
+        let y = y + dY;
+        return;
+    }
+
+    method void draw(){
+        var int minX, minY, maxX, maxY;
+        var int row, col;
+
+        let minX = Math.max(0, x - r);
+        let maxX = Math.min(511, x + r);
+        let minY = Math.max(0, y - r);
+        let maxY = Math.min(255, y + r);
+
+        // l -> r
+        let col = minX;
+        let row = minY;
+        while(col < maxX){
+            do Screen.drawPixel(col, row);
+            let col = col + 1;
+        }
+        // t -> b
+        let col = maxX;
+        let row = minY;
+        while(row < maxY){
+            do Screen.drawPixel(col, row);
+            let row = row + 1;
+        }
+        // r -> l
+        let row = maxY;
+        let col = maxX;
+        while(col > minX){
+            do Screen.drawPixel(col, row);
+            let col = col - 1;
+        }
+        // b -> t
+        let row = maxY;
+        let col = minX;
+        while(row > minX){
+            do Screen.drawPixel(col, row);
+            let row = row - 1;
+        }
+
+        return;
+    }
+
+    method void move(int _x, int _y){
+        return;
+    }
+}
