@@ -23,17 +23,19 @@ bool isJackFile(string inFile){
 
 /** Compiles an individual .jack file. */
 void compileFile(string fileName){  
-    string outFile = (fileName.substr(0, fileName.length() - 5)).append(".xml");
+    string outFile = (fileName.substr(0, fileName.length() - 5)).append("_out.xml");
     std::cout << "opening " << fileName << " for reading" << std::endl;
     std::cout << "opening " << outFile << " for writing" << std::endl;
     
     jackTokenizer* tokenizer = new jackTokenizer(fileName);
     compilationEngineXML compEng(tokenizer, outFile);
 
+    /*
     while(tokenizer->hasMoreTokens()){
         tokenizer->advance();
         tokenizer->tokenType();
     }
+    */
 }
 
 /** Main application method, takes cli input. */

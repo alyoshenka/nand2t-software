@@ -28,6 +28,9 @@ class compilationEngineXML{
 
     jackTokenizer* tokenizer;
 
+    bool isClassVarDec(keyword kw);
+    bool isSubroutineDec(keyword kw);
+
 public:
 
     /** Creates a new compilation engine. 
@@ -44,14 +47,14 @@ public:
      * constructor. */
     void compileSubroutine();
 
-    /** Compiles a (possibly empty) patameter list, 
+    /** Compiles a (possibly empty) parameter list, 
      * not including the closing "()". */
     void compileParameterList();
 
     /** Compiles a variable declaration. */
     void compileVarDec();
 
-    /** Compiles a dequence of statements, not including
+    /** Compiles a sequence of statements, not including
      * the enclosing "{}". */
     void compileStatements();
 
