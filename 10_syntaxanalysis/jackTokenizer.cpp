@@ -95,8 +95,6 @@ void jackTokenizer::advance(){
     if(nextToken > 0){        
         string beforeString = fileContents.substr(0, nextToken);
 
-        std::cout << "bs: " << beforeString << std::endl;
-
         // if fileContents[nextToken] is a token itself
         if(string::npos == beforeString.find_first_not_of(' ')){
             currentToken = fileContents[nextToken];
@@ -106,11 +104,15 @@ void jackTokenizer::advance(){
             int ws;
             // left
             ws = beforeString.find_first_not_of(' ');
-            beforeString = beforeString.substr(ws);       
-            // right
+            nextToken = ws;
+            beforeString = beforeString.substr(ws);  
+
+            // get first word and reset nextToken
             ws = beforeString.find_first_of(' ');
+            if(string::npos == ws){ws = beforeString.length();}
             beforeString = beforeString.substr(0, ws);
 
+            nextToken += ws;
             currentToken = beforeString;
         }               
     } else if(nextToken == 0){
