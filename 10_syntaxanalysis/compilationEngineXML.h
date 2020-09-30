@@ -28,8 +28,10 @@ class compilationEngineXML{
 
     jackTokenizer* tokenizer;
 
-    bool isClassVarDec(keyword kw);
-    bool isSubroutineDec(keyword kw);
+    static string kwToString(keyword kw);
+    static bool isClassVarDec(keyword kw);
+    static bool isSubroutineDec(keyword kw);
+    static bool isFundamentalType(keyword kw);
 
 public:
 
