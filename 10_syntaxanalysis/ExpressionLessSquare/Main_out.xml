@@ -19,4 +19,109 @@
 		<symbol> { </symbol>
 			<varDec>
 				<keyword> var </keyword>
-				<identifier> 
+				<identifier> SquareGame </identifier>
+				<identifier> game </identifier>
+				<symbol> ; </symbol>
+			</varDec>
+			<keyword> let </keyword>
+			<identifier> game </identifier>
+			<symbol> = </symbol>
+			<identifier> game </identifier>
+			<symbol> ; </symbol>
+			<keyword> do </keyword>
+			<identifier> game </identifier>
+			<symbol> . </symbol>
+			<identifier> run </identifier>
+			<symbol> ( </symbol>
+			<symbol> ) </symbol>
+			<symbol> ; </symbol>
+			<keyword> do </keyword>
+			<identifier> game </identifier>
+			<symbol> . </symbol>
+			<identifier> dispose </identifier>
+			<symbol> ( </symbol>
+			<symbol> ) </symbol>
+			<symbol> ; </symbol>
+			<keyword> return </keyword>
+			<symbol> ; </symbol>
+		<symbol> } </symbol>
+		</subroutineBody>
+		<subroutineDec>
+			<keyword> function </keyword>
+			<keyword> void </keyword>
+			<identifier> test </identifier>
+			<symbol> ( </symbol>
+				<symbol> ) </symbol>
+			</subroutineDec>
+			<subroutineBody>
+			<symbol> { </symbol>
+				<varDec>
+					<keyword> var </keyword>
+					<keyword> int </keyword>
+					<identifier> i </identifier>
+					<symbol> , </symbol>
+					<identifier> j </identifier>
+					<symbol> ; </symbol>
+				</varDec>
+				<varDec>
+					<keyword> var </keyword>
+					<identifier> String </identifier>
+					<identifier> s </identifier>
+					<symbol> ; </symbol>
+				</varDec>
+				<varDec>
+					<keyword> var </keyword>
+					<identifier> Array </identifier>
+					<identifier> a </identifier>
+					<symbol> ; </symbol>
+				</varDec>
+				<keyword> if </keyword>
+				<symbol> ( </symbol>
+				<identifier> i </identifier>
+				<symbol> ) </symbol>
+				<symbol> { </symbol>
+				<keyword> let </keyword>
+				<identifier> s </identifier>
+				<symbol> = </symbol>
+				<identifier> i </identifier>
+				<symbol> ; </symbol>
+				<keyword> let </keyword>
+				<identifier> s </identifier>
+				<symbol> = </symbol>
+				<identifier> j </identifier>
+				<symbol> ; </symbol>
+				<keyword> let </keyword>
+				<identifier> a </identifier>
+				<symbol> [ </symbol>
+				<identifier> i </identifier>
+				<symbol> ] </symbol>
+				<symbol> = </symbol>
+				<identifier> j </identifier>
+				<symbol> ; </symbol>
+				<symbol> } </symbol>
+				<keyword> else </keyword>
+				<symbol> { </symbol>
+				<keyword> let </keyword>
+				<identifier> i </identifier>
+				<symbol> = </symbol>
+				<identifier> i </identifier>
+				<symbol> ; </symbol>
+				<keyword> let </keyword>
+				<identifier> j </identifier>
+				<symbol> = </symbol>
+				<identifier> j </identifier>
+				<symbol> ; </symbol>
+				<keyword> let </keyword>
+				<identifier> i </identifier>
+				<symbol> = </symbol>
+				<identifier> i </identifier>
+				<symbol> | </symbol>
+				<identifier> j </identifier>
+				<symbol> ; </symbol>
+				<symbol> } </symbol>
+				<keyword> return </keyword>
+				<symbol> ; </symbol>
+			<symbol> } </symbol>
+			</subroutineBody>
+<symbol> } </symbol>
+</class>

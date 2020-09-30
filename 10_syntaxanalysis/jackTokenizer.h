@@ -64,4 +64,7 @@ public:
      * token. Should only be called when tokenType()
      * is STRING_CONST. */
     string stringVal();
+
+    /** returns the current token */
+    string token() const;
 };

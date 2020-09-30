@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <cassert>
+#include <algorithm>
 
 #include "jackTokenizer.h"
 

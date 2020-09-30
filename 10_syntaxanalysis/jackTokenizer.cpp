@@ -255,3 +255,7 @@ string jackTokenizer::stringVal(){
     // check for validity(?)
     return currentToken;
 }
+
+string jackTokenizer::token() const {
+    return currentToken;
+}

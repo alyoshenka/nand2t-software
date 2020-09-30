@@ -54,7 +54,7 @@ const char symbols[] = {
 const string symbolString =
     "{}()[].,;+-*/&|<>=~";
 
-const char ops[] = {
+const string ops = {
     '+', '-', '*', '/', '&', '|',
     '<', '>', '='
 };
