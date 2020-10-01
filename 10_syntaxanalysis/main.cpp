@@ -7,14 +7,14 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "jackTokenizer.h"
 #include "compilationEngineXML.h"
 
 using std::string;
-
-#include <fstream>
 using std::ifstream;
+
 
 /** Is the given string a valid .jack file? */
 bool isJackFile(string inFile){
@@ -59,6 +59,11 @@ int main(int cnt, char* args[]){
     } else{ // else dir
         // for all .jack files inFile/
         //      compileFile(filename.jack);
+        /*
+        for(const auto &entry : fs::directory_iterator(inFile)){
+            std::cout << entry.path() << std::endl;
+        }*/
+        std::cout << "c++ is dumb." << std::endl;
     }
 
     return 0;

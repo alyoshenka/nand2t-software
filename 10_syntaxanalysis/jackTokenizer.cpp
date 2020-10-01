@@ -256,6 +256,10 @@ string jackTokenizer::stringVal(){
     return currentToken;
 }
 
-string jackTokenizer::token() const {
+string jackTokenizer::getCurrentToken() const {
     return currentToken;
+}
+
+string jackTokenizer::getFileContents() const {
+    return fileContents;
 }

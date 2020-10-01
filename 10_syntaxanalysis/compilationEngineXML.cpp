@@ -47,6 +47,8 @@ void compilationEngineXML::compileClass(){
         if(tokentype::KEYWORD != tokenizer->tokenType()) { break; }
         kw = tokenizer->keyWord();
     }
+
+    std::cout << tokenizer->getFileContents() << std::endl;
     
     // symbol } 
     assert(tokentype::SYMBOL == tokenizer->tokenType());
@@ -96,6 +98,7 @@ void compilationEngineXML::compileClassVarDec(){
     tokenizer->advance();
     assert(tokentype::SYMBOL == tokenizer->tokenType());
     while(',' == tokenizer->symbol()){
+        outStream << indentation << "<symbol> , </symbol>\n";
         tokenizer->advance();
         tokentype tt = tokenizer->tokenType();
         if(tokentype::KEYWORD == tt){
@@ -149,10 +152,10 @@ void compilationEngineXML::compileSubroutine(){
     outStream << " </keyword>\n";
 
     tokenizer->advance();
-    kw = tokenizer->keyWord();
     tt = tokenizer->tokenType();
     // keyword type | identifier type    
     if(tt == tokentype::KEYWORD){
+        kw = tokenizer->keyWord();
         assert(isFundamentalType(kw));
         outStream << indentation << "<keyword> "
             << kwToString(kw) << " </keyword>\n";
@@ -180,10 +183,8 @@ void compilationEngineXML::compileSubroutine(){
     // symbol )
     assert(tokentype::SYMBOL == tokenizer->tokenType());
     assert(')' == tokenizer->symbol());
-    outStream << indentation << "<symbol> ) </symbol>\n";
-
     indentation.pop_back();
-    outStream << indentation << "</subroutineDec>\n";   
+    outStream << indentation << "<symbol> ) </symbol>\n"; 
 
     // subroutineBody
     outStream << indentation << "<subroutineBody>\n";
@@ -211,12 +212,13 @@ void compilationEngineXML::compileSubroutine(){
     assert('}' == tokenizer->symbol());
     outStream << indentation << "<symbol> } </symbol>\n";
     
-    outStream << indentation << "</subroutineBody>\n";
+    outStream << indentation << "</subroutineBody>\n";   
+    outStream << indentation << "</subroutineDec>\n";  
     tokenizer->advance();
 }
 
-// NOT DONE
 void compilationEngineXML::compileParameterList(){
+    outStream << indentation << "<parameterList>\n";
     std::cout << "compiling parameter list" << std::endl;
     indentation.push_back(tab);
     // ((type varName) (, type varName)*)?
@@ -224,6 +226,7 @@ void compilationEngineXML::compileParameterList(){
     // no parameters
     if(tokentype::SYMBOL == tokenizer->tokenType()){
         assert(')' == tokenizer->symbol());
+        outStream << indentation << "</parameterList>\n";
         return;
     }
 
@@ -247,10 +250,33 @@ void compilationEngineXML::compileParameterList(){
 
     tokenizer->advance();
     // any other parameters
+    assert(tokentype::SYMBOL == tokenizer->tokenType());
+    while(',' == tokenizer->symbol()){
+        outStream << indentation << "<symbol> , </symbol>\n";
+        tokenizer->advance();
+        // type
+        if(tokentype::KEYWORD == tokenizer->tokenType()){
+            keyword kw = tokenizer->keyWord();
+            assert(isFundamentalType(kw));
+            outStream << indentation << "<keyword> " <<
+                kwToString(kw) << " </keyword>\n";
+        } else if(tokentype::IDENTIFIER == tokenizer->tokenType()){
+            outStream << indentation << "<identifier> " <<
+                tokenizer->identifier() << " </identifier>\n";
+        } else { assert(false); }
 
-    // come back to this!
+        tokenizer->advance();
+        // name
+        assert(tokentype::IDENTIFIER == tokenizer->tokenType());
+        outStream << indentation << "<identifier> " <<
+            tokenizer->identifier() << " </identifier>\n";
+        tokenizer->advance();
+
+        assert(tokentype::SYMBOL == tokenizer->tokenType());
+    }
 
     indentation.pop_back();
+    outStream << indentation << "</parameterList>\n";
 }
 
 void compilationEngineXML::compileVarDec(){
@@ -315,6 +341,7 @@ void compilationEngineXML::compileVarDec(){
 
 void compilationEngineXML::compileStatements(){   
     std::cout << "compiling statements" << std::endl;
+    outStream << indentation << "<statements>\n";
     // compile until reach return
 
     tokentype tt = tokenizer->tokenType();
@@ -342,16 +369,21 @@ void compilationEngineXML::compileStatements(){
 
         // check next statement
         tt = tokenizer->tokenType();
-        if(tokentype::SYMBOL == tt && '}' == tokenizer->symbol()) { return; }
+        if(tokentype::SYMBOL == tt && '}' == tokenizer->symbol()) { 
+            outStream << indentation << "</statements>\n";
+            return; 
+        }
         assert(tokentype::KEYWORD == tt);
         kw = tokenizer->keyWord();
     }
 
     compileReturn();
+    outStream << indentation << "</statements>\n";
 }
 
 void compilationEngineXML::compileDo(){
     std::cout << "compiling do" << std::endl;
+    outStream << indentation << "<doStatement>\n";
     // 'do' subroutineCall ';'
     //      subroutineName '(' expressionList ')' | ( className | varName )
     //      '.' subroutineName '(' expressionList ')'
@@ -391,10 +423,13 @@ void compilationEngineXML::compileDo(){
     assert(';' == tokenizer->symbol());
     outStream << indentation << "<symbol> ; </symbol>\n";
     tokenizer->advance();
+
+    outStream << indentation << "</doStatement>\n";
 }
 
 void compilationEngineXML::compileLet(){
     std::cout << "compiling let" << std::endl;
+    outStream << indentation << "<letStatement>\n";
     // 'let' varName ('[' expression ']')?  '=' expression ';'
 
     assert(tokentype::KEYWORD == tokenizer->tokenType());
@@ -425,17 +460,20 @@ void compilationEngineXML::compileLet(){
     assert(';' == tokenizer->symbol());
     outStream << indentation << "<symbol> ; </symbol>\n";
     tokenizer->advance();
+
+    outStream << indentation << "</letStatement>\n";
 }
 
 void compilationEngineXML::compileWhile(){
     std::cout << "compiling while" << std::endl;
+    outStream << indentation << "<whileStatement>\n";
     // 'while' '(' expression ')' '{' statements '}'
     
     assert(tokentype::KEYWORD == tokenizer->tokenType());
     assert(keyword::WHILE == tokenizer->keyWord());
     outStream << indentation << "<keyword> while </keyword>\n";
     tokenizer->advance();
-    assert(tokentype::SYMBOL == tokenizer->symbol());
+    assert(tokentype::SYMBOL == tokenizer->tokenType());
     assert('(' == tokenizer->symbol());
     outStream << indentation << "<symbol> ( </symbol>\n";
     tokenizer->advance();
@@ -452,9 +490,13 @@ void compilationEngineXML::compileWhile(){
     assert(tokentype::SYMBOL == tokenizer->tokenType());
     assert('}' == tokenizer->symbol());
     outStream << indentation << "<symbol> } </symbol>\n";
+    tokenizer->advance();
+
+    outStream << indentation << "</whileStatement>\n";
 }
 
 void compilationEngineXML::compileReturn(){
+    outStream << indentation << "<returnStatement>\n";
     std::cout << "compiling return" << std::endl;
     // 'return' expression? ';'
 
@@ -469,9 +511,12 @@ void compilationEngineXML::compileReturn(){
     assert(';' == tokenizer->symbol());
     outStream << indentation << "<symbol> ; </symbol>\n";
     tokenizer->advance();
+
+    outStream << indentation << "</returnStatement>\n";
 }
 
 void compilationEngineXML::compileIf(){
+    outStream << indentation << "<ifStatement>\n";
     std::cout << "compiling if" << std::endl;
     // 'if' '(' expression ')' '{' statements '}'
     // ('else' '{' statements '}')?
@@ -516,13 +561,15 @@ void compilationEngineXML::compileIf(){
         outStream << indentation << "<symbol> } </symbol>\n";
         tokenizer->advance();
     }
+
+    outStream << indentation << "</ifStatement>\n";
 }
 
 void compilationEngineXML::compileExpression(){
+    outStream << indentation << "<expression>\n";
     std::cout << "compiling expression" << std::endl;
     // term (op term)*
     compileTerm();
-    std::cout << "post term1: " << tokenizer->token() << std::endl;
     if(tokentype::SYMBOL != tokenizer->tokenType()) { return; }
     while(tokentype::SYMBOL == tokenizer->tokenType() 
         && string::npos != ops.find(tokenizer->symbol())) {
@@ -534,9 +581,11 @@ void compilationEngineXML::compileExpression(){
         // term
         compileTerm();  
     }
+    outStream << indentation << "</expression>\n";
 }
 
 void compilationEngineXML::compileTerm(){
+    outStream << indentation << "<term>\n";
     std::cout << "compiling term" << std::endl;
     // integerConstant | stringConstant | keywordConstant
     // | varName | varName '[' expression ']' | subroutineCall
@@ -555,10 +604,13 @@ void compilationEngineXML::compileTerm(){
         && keywordConstants->find(kwToString(tokenizer->keyWord()))){
 
         std::cout << "term: kw const" << std::endl;
-        outStream << indentation << "<keywordConstant> " 
-            << kwToString(tokenizer->keyWord()) << " <keywordConstant>\n";
+        outStream << indentation << "<keyword> " 
+            << kwToString(tokenizer->keyWord()) << " </keyword>\n";
     } else if(tokentype::SYMBOL == tt){
-        if(')' == tokenizer->symbol()) { return; } // empty
+        if(')' == tokenizer->symbol()) { 
+            outStream << indentation << "</term>\n";
+            return; 
+        } // empty
         if ('(' == tokenizer->symbol()){ // '(' expression ')'   
             std::cout << "term: (expression)" << std::endl;
             outStream << indentation << "<symbol> ( </symbol>\n";
@@ -621,20 +673,39 @@ void compilationEngineXML::compileTerm(){
             assert(tokentype::SYMBOL == tokenizer->tokenType());
             assert(')' == tokenizer->symbol());
             outStream << indentation << "<symbol> ) </symbol>\n";
-        } else { return; } // ?
+        } else { 
+            outStream << indentation << "</term>\n";            
+            return; 
+        } // ?
     }
     tokenizer->advance(); // ';'
+    outStream << indentation << "</term>\n";
 }
 
 void compilationEngineXML::compileExpressionList(){
+    outStream << indentation << "<expressionList>\n";
     std::cout << "compiling expression list" << std::endl;
+
+    // if empty (only to conform to cmp file)
+    if(tokentype::SYMBOL == tokenizer->tokenType()
+        && ')' == tokenizer->symbol()){
+
+        outStream << indentation << "</expressionList>\n";
+        return;
+    }
+
     // (expression (',' expression)*)?
     compileExpression();
     while(tokentype::SYMBOL == tokenizer->tokenType()
         && ',' == tokenizer->symbol()){
 
+        outStream << indentation << "<symbol> , </symbol>\n";
+
+        tokenizer->advance();
         compileExpression();
     }
+
+    outStream << indentation << "</expressionList>\n";
 }
 
 string compilationEngineXML::kwToString(keyword kw){
@@ -642,16 +713,14 @@ string compilationEngineXML::kwToString(keyword kw){
     {
     case keyword::INT:
         return "int";
-        break;
     case keyword::CHAR:
         return "char";
-        break;
     case keyword::BOOLEAN:
         return "boolean";
-        break;
     case keyword::VOID:
         return "void";
-        break;
+    case keyword::THIS:
+        return "this";
     default:
         assert(false);
         break;

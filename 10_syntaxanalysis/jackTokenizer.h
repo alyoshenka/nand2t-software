@@ -66,5 +66,8 @@ public:
     string stringVal();
 
     /** returns the current token */
-    string token() const;
+    string getCurrentToken() const;
+
+    /** returns the file contents */
+    string getFileContents() const;
 };
