@@ -607,10 +607,10 @@ void compilationEngineXML::compileTerm(){
         outStream << indentation << "<keyword> " 
             << kwToString(tokenizer->keyWord()) << " </keyword>\n";
     } else if(tokentype::SYMBOL == tt){
-        if(')' == tokenizer->symbol()) { 
+        if(')' == tokenizer->symbol()) { // empty
             outStream << indentation << "</term>\n";
             return; 
-        } // empty
+        } 
         if ('(' == tokenizer->symbol()){ // '(' expression ')'   
             std::cout << "term: (expression)" << std::endl;
             outStream << indentation << "<symbol> ( </symbol>\n";
@@ -623,8 +623,8 @@ void compilationEngineXML::compileTerm(){
             || unaryOps[1] == tokenizer->symbol()){ // unaryOp term
             
             std::cout << "term: unaryOp term" << std::endl;
-            outStream << indentation << "<unaryOp> " <<
-                tokenizer->symbol() << " </unaryOp>\n";
+            outStream << indentation << "<symbol> " <<
+                tokenizer->symbol() << " </symbol>\n";
             tokenizer->advance();
             compileTerm();
         } else { assert(false); }
@@ -645,7 +645,7 @@ void compilationEngineXML::compileTerm(){
             tokenizer->advance();
             compileExpression();
             assert(tokentype::SYMBOL == tokenizer->tokenType());
-            assert('[' == tokenizer->symbol());
+            assert(']' == tokenizer->symbol());
             outStream << indentation << "<symbol> ] </symbol>\n";
         } else if('(' == s){ // subroutineCall()
             std::cout << "term: subroutineName(expressionList)" << std::endl;
@@ -675,7 +675,7 @@ void compilationEngineXML::compileTerm(){
             outStream << indentation << "<symbol> ) </symbol>\n";
         } else { 
             outStream << indentation << "</term>\n";            
-            return; 
+            return;  
         } // ?
     }
     tokenizer->advance(); // ';'
@@ -721,6 +721,12 @@ string compilationEngineXML::kwToString(keyword kw){
         return "void";
     case keyword::THIS:
         return "this";
+    case keyword::TRUE:
+        return "true";
+    case keyword::FALSE:
+        return "false";
+    case keyword::NULLVALUE:
+        return "null";
     default:
         assert(false);
         break;

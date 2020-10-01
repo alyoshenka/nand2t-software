@@ -90,6 +90,20 @@ void jackTokenizer::advance(){
     // check if resulting string is a keyword
     // else it is a variable
 
+    // strip left whitespace
+    fileContents = fileContents.substr(fileContents.find_first_not_of(' '));
+
+    // if string constant
+    if('"' == fileContents[0]){
+        int end = fileContents.substr(1).find_first_of('"') + 2;
+        currentToken = fileContents.substr(0, end);
+        fileContents = fileContents.substr(end);
+
+        std::cout << "t: " << currentToken << std::endl;
+        std::cout << "f: " << fileContents << std::endl;
+        return;
+    }
+
     int nextToken = fileContents.find_first_of(symbolString);
     // if it doesn't start with a symbol
     if(nextToken > 0){        
