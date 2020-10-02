@@ -38,13 +38,13 @@
 			<expressionList>
 			<expression>
 			<term>
-			<identifier> 0 </identifier>
+			<integerConstant> 0 </integerConstant>
 			</term>
 			</expression>
 			<symbol> , </symbol>
 			<expression>
 			<term>
-			<identifier> 0 </identifier>
+			<integerConstant> 0 </integerConstant>
 			</term>
 			</expression>
 			<symbol> , </symbol>
@@ -65,7 +65,7 @@
 			<symbol> = </symbol>
 			<expression>
 			<term>
-			<identifier> 0 </identifier>
+			<integerConstant> 0 </integerConstant>
 			</term>
 			</expression>
 			<symbol> ; </symbol>
@@ -337,7 +337,7 @@
 						</term>
 						<symbol> = </symbol>
 						<term>
-						<identifier> 0 </identifier>
+						<integerConstant> 0 </integerConstant>
 						</term>
 						</expression>
 						<symbol> ) </symbol>
@@ -589,7 +589,7 @@
 						</term>
 						<symbol> = </symbol>
 						<term>
-						<identifier> 0 </identifier>
+						<integerConstant> 0 </integerConstant>
 						</term>
 						</expression>
 						<symbol> ) </symbol>

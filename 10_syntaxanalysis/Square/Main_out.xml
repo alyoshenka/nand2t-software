@@ -120,7 +120,7 @@
 				<symbol> = </symbol>
 				<expression>
 				<term>
-				<stringConstant> "string constant" </stringConstant>
+				<stringConstant> string constant </stringConstant>
 				</term>
 				</expression>
 				<symbol> ; </symbol>
@@ -185,6 +185,8 @@
 				</term>
 				</term>
 				</expression>
+				<symbol> ) </symbol>
+				</term>
 				</expression>
 				<symbol> ; </symbol>
 				</letStatement>
@@ -207,6 +209,8 @@
 				</term>
 				</term>
 				</expression>
+				<symbol> ) </symbol>
+				</term>
 				</expression>
 				<symbol> ; </symbol>
 				</letStatement>

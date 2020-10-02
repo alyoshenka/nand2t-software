@@ -29,16 +29,9 @@ void compileFile(string fileName){
     
     jackTokenizer* tokenizer = new jackTokenizer(fileName);
     compilationEngineXML compEng(tokenizer, outFile);
-
-    /*
-    while(tokenizer->hasMoreTokens()){
-        tokenizer->advance();
-        tokenizer->tokenType();
-    }
-    */
 }
 
-/** Main application method, takes cli input. */
+/** Main application method, takes cl input. */
 int main(int cnt, char* args[]){
 
     // if no argument specified

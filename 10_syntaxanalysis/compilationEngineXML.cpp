@@ -575,8 +575,18 @@ void compilationEngineXML::compileExpression(){
 
         std::cout << "term: (op term)*" << std::endl;
         // op
-        outStream << indentation << "<symbol> " <<
-            tokenizer->symbol() << " </symbol>\n";
+        char s = tokenizer->symbol();
+        if('>' == s){
+            outStream << indentation << "<symbol> &gt; </symbol>\n";
+        } else if('<' == s){
+            outStream << indentation << "<symbol> &lt; </symbol>\n";
+        } else if('&' == s){
+            outStream << indentation << "<symbol> &amp; </symbol>\n";
+        }else{
+            outStream << indentation << "<symbol> " <<
+                tokenizer->symbol() << " </symbol>\n";
+        }
+        
         tokenizer->advance();
         // term
         compileTerm();  
@@ -593,7 +603,7 @@ void compilationEngineXML::compileTerm(){
 
     tokentype tt = tokenizer->tokenType();
     if(tokentype::INT_CONST == tt){ // int const
-        std::cout << "term: int const: " << tokenizer->intVal() << std::endl;
+        std::cout << "term: int const" << std::endl;
         outStream << indentation << "<integerConstant> " 
             << tokenizer->intVal() << " </integerConstant>\n";
     } else if(tokentype::STRING_CONST == tt){ // str const
@@ -631,7 +641,6 @@ void compilationEngineXML::compileTerm(){
         } else { assert(false); }
     } else{ // varName | varName[expression] | subroutineCall()
         std::cout << "term: varName" << std::endl;
-        std::cout << "name: " << tokenizer->getCurrentToken() << std::endl;
         assert(tokentype::IDENTIFIER == tokenizer->tokenType());
         // varName
         outStream << indentation << "<identifier> " << 
@@ -677,7 +686,6 @@ void compilationEngineXML::compileTerm(){
             outStream << indentation << "<symbol> ) </symbol>\n";
         } else { 
             outStream << indentation << "</term>\n"; 
-            std::cout << "term ret: " << tokenizer->getCurrentToken() << std::endl;          
             return;  
         } // ?
     }

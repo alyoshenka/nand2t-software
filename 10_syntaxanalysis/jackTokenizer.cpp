@@ -91,11 +91,12 @@ bool jackTokenizer::hasMoreTokens(){
 }
 
 void jackTokenizer::advance(){
-
     // go to next symbol
     // erase whitespace in string before symbol
     // check if resulting string is a keyword
     // else it is a variable
+
+    fileContents = fileContents.substr(fileContents.find_first_not_of(" \t"));
 
     // if string constant
     if('"' == fileContents[fileContents.find_first_not_of(' ')]){
@@ -106,8 +107,8 @@ void jackTokenizer::advance(){
         currentToken = fileContents.substr(0, end);
         fileContents = fileContents.substr(end);
 
-        std::cout << "t: " << currentToken << std::endl;
-        std::cout << "f: " << fileContents << std::endl;
+        // std::cout << "t: " << currentToken << std::endl;
+        // std::cout << "f: " << fileContents << std::endl;
         return;
     }
 
@@ -124,7 +125,8 @@ void jackTokenizer::advance(){
             // strip whitespace
             int ws;
             // left
-            ws = beforeString.find_first_not_of(' ');
+            ws = beforeString.find_first_not_of(" \t");
+
             nextToken = ws;
             beforeString = beforeString.substr(ws);  
 
@@ -144,6 +146,7 @@ void jackTokenizer::advance(){
     }
     // std::cout << "token: " << currentToken << std::endl;
     fileContents = fileContents.substr(nextToken);
+
     return;
 }
 
@@ -185,7 +188,7 @@ tokentype jackTokenizer::tokenType(){
     //      int const???
     try{
         int ret = std::stoi(currentToken);
-        if(ret > 0){
+        if(ret >= 0){
             // std::cout << "'" << currentToken << "' type: int_const" << std::endl;
             return tokentype::INT_CONST;
         }
@@ -274,7 +277,9 @@ int jackTokenizer::intVal(){
 
 string jackTokenizer::stringVal(){
     // check for validity(?)
-    return currentToken;
+
+    // strip ""
+    return currentToken.substr(1, currentToken.length() - 2);
 }
 
 string jackTokenizer::getCurrentToken() const {
