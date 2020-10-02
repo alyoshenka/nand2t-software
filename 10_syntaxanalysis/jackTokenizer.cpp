@@ -64,9 +64,12 @@ jackTokenizer::jackTokenizer(string inFile){
             if('/' == line[com + 1]){
                 // strip inline comment
                 line = line.substr(0, com);
-                com = string::npos;
+                break;
             } else {
-                com = line.substr(com + 1).find_first_of('/') + com + 1;
+                int hold = com + 1;
+                com = line.substr(com + 1).find_first_of('/');
+                if(string::npos == com) { break; }
+                com += hold;
                 if(line[com-1] == '*') { break; }
             }
         }    

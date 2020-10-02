@@ -476,6 +476,7 @@ void compilationEngineXML::compileWhile(){
     tokenizer->advance();
     compileExpression();
     assert(tokentype::SYMBOL == tokenizer->tokenType());
+    std::cout << "sym: " << tokenizer->symbol() << std::endl;
     assert(')' == tokenizer->symbol());
     outStream << indentation << "<symbol> ) </symbol>\n";
     tokenizer->advance();
@@ -625,10 +626,12 @@ void compilationEngineXML::compileTerm(){
                 tokenizer->symbol() << " </symbol>\n";
             tokenizer->advance();
             compileTerm();
+            outStream << indentation << "</term>\n";
+            return; // do not advance
         } else { assert(false); }
     } else{ // varName | varName[expression] | subroutineCall()
         std::cout << "term: varName" << std::endl;
-        std::cout << tokenizer->getCurrentToken() << std::endl;
+        std::cout << "name: " << tokenizer->getCurrentToken() << std::endl;
         assert(tokentype::IDENTIFIER == tokenizer->tokenType());
         // varName
         outStream << indentation << "<identifier> " << 
