@@ -28,7 +28,7 @@ class Main {
         }
         else {              // There is no else keyword in the Square files.
             let i = i * (-j);
-            let j = j / (-2);   // note: unary negate constant 2
+            let j = j / (-2);   // note: unary negate constant 2            
             let i = i | j;
         }
         return;

@@ -47,8 +47,6 @@ void compilationEngineXML::compileClass(){
         if(tokentype::KEYWORD != tokenizer->tokenType()) { break; }
         kw = tokenizer->keyWord();
     }
-
-    std::cout << tokenizer->getFileContents() << std::endl;
     
     // symbol } 
     assert(tokentype::SYMBOL == tokenizer->tokenType());
@@ -452,7 +450,6 @@ void compilationEngineXML::compileLet(){
         tokenizer->advance();
         assert(tokentype::SYMBOL == tokenizer->tokenType());
     }
-    assert('=' == tokenizer->symbol());
     outStream << indentation << "<symbol> = </symbol>\n";
     tokenizer->advance();
     compileExpression();
@@ -570,9 +567,11 @@ void compilationEngineXML::compileExpression(){
     std::cout << "compiling expression" << std::endl;
     // term (op term)*
     compileTerm();
+
     if(tokentype::SYMBOL != tokenizer->tokenType()) { return; }
     while(tokentype::SYMBOL == tokenizer->tokenType() 
         && string::npos != ops.find(tokenizer->symbol())) {
+
         std::cout << "term: (op term)*" << std::endl;
         // op
         outStream << indentation << "<symbol> " <<
@@ -593,16 +592,14 @@ void compilationEngineXML::compileTerm(){
 
     tokentype tt = tokenizer->tokenType();
     if(tokentype::INT_CONST == tt){ // int const
-        std::cout << "term: int const" << std::endl;
+        std::cout << "term: int const: " << tokenizer->intVal() << std::endl;
         outStream << indentation << "<integerConstant> " 
-            << tokenizer->intVal() << " <integerConstant>\n";
+            << tokenizer->intVal() << " </integerConstant>\n";
     } else if(tokentype::STRING_CONST == tt){ // str const
         std::cout << "term: str const" << std::endl;
         outStream << indentation << "<stringConstant> " 
-            << tokenizer->stringVal() << " <stringConstant>\n";
-    } else if(tokentype::KEYWORD == tt // kw const
-        && keywordConstants->find(kwToString(tokenizer->keyWord()))){
-
+            << tokenizer->stringVal() << " </stringConstant>\n";
+    } else if(tokentype::KEYWORD == tt) { // kw const
         std::cout << "term: kw const" << std::endl;
         outStream << indentation << "<keyword> " 
             << kwToString(tokenizer->keyWord()) << " </keyword>\n";
@@ -617,6 +614,7 @@ void compilationEngineXML::compileTerm(){
             tokenizer->advance();
             compileExpression();
             assert(tokentype::SYMBOL == tokenizer->tokenType());
+            if(';' == tokenizer->symbol()){return;} // HERE
             assert(')' == tokenizer->symbol());
             outStream << indentation << "<symbol> ) </symbol>\n";
         } else if(unaryOps[0] == tokenizer->symbol() // (sorry)
@@ -630,6 +628,7 @@ void compilationEngineXML::compileTerm(){
         } else { assert(false); }
     } else{ // varName | varName[expression] | subroutineCall()
         std::cout << "term: varName" << std::endl;
+        std::cout << tokenizer->getCurrentToken() << std::endl;
         assert(tokentype::IDENTIFIER == tokenizer->tokenType());
         // varName
         outStream << indentation << "<identifier> " << 
@@ -674,11 +673,13 @@ void compilationEngineXML::compileTerm(){
             assert(')' == tokenizer->symbol());
             outStream << indentation << "<symbol> ) </symbol>\n";
         } else { 
-            outStream << indentation << "</term>\n";            
+            outStream << indentation << "</term>\n"; 
+            std::cout << "term ret: " << tokenizer->getCurrentToken() << std::endl;          
             return;  
         } // ?
     }
-    tokenizer->advance(); // ';'
+    
+    tokenizer->advance(); // ;
     outStream << indentation << "</term>\n";
 }
 

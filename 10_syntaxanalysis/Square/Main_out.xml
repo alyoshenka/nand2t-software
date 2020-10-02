@@ -120,7 +120,7 @@
 				<symbol> = </symbol>
 				<expression>
 				<term>
-				<stringConstant> "string constant" <stringConstant>
+				<stringConstant> "string constant" </stringConstant>
 				</term>
 				</expression>
 				<symbol> ; </symbol>
@@ -142,7 +142,7 @@
 				<symbol> [ </symbol>
 				<expression>
 				<term>
-				<integerConstant> 1 <integerConstant>
+				<integerConstant> 1 </integerConstant>
 				</term>
 				</expression>
 				<symbol> ] </symbol>
@@ -153,7 +153,7 @@
 				<symbol> [ </symbol>
 				<expression>
 				<term>
-				<integerConstant> 2 <integerConstant>
+				<integerConstant> 2 </integerConstant>
 				</term>
 				</expression>
 				<symbol> ] </symbol>
@@ -202,3 +202,39 @@
 				<expression>
 				<term>
 				<symbol> - </symbol>
+				<term>
+				<integerConstant> 2 </integerConstant>
+				</term>
+				</term>
+				</expression>
+				</expression>
+				<symbol> ; </symbol>
+				</letStatement>
+				<letStatement>
+				<keyword> let </keyword>
+				<identifier> i </identifier>
+				<symbol> = </symbol>
+				<expression>
+				<term>
+				<identifier> i </identifier>
+				</term>
+				<symbol> | </symbol>
+				<term>
+				<identifier> j </identifier>
+				</term>
+				</expression>
+				<symbol> ; </symbol>
+				</letStatement>
+				</statements>
+				<symbol> } </symbol>
+				</ifStatement>
+				<returnStatement>
+				<keyword> return </keyword>
+				<symbol> ; </symbol>
+				</returnStatement>
+				</statements>
+			<symbol> } </symbol>
+			</subroutineBody>
+			</subroutineDec>
+<symbol> } </symbol>
+</class>

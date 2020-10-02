@@ -59,17 +59,21 @@ jackTokenizer::jackTokenizer(string inFile){
         // strip inline "//" comments
         com = line.find_first_of("/");
         // if "/"
-        if(string::npos != com){
+        while(string::npos != com){
             // if next = "/"
             if('/' == line[com + 1]){
                 // strip inline comment
                 line = line.substr(0, com);
+                com = string::npos;
+            } else {
+                com = line.substr(com + 1).find_first_of('/') + com + 1;
+                if(line[com-1] == '*') { break; }
             }
-        }
+        }    
 
+        // std::cout << line << std::endl;
         fileContents.append(line);
     }
-
     // remove all whitespace(?) 
 
     // remove block "/* */" and api "/** */"comments 
@@ -90,11 +94,11 @@ void jackTokenizer::advance(){
     // check if resulting string is a keyword
     // else it is a variable
 
-    // strip left whitespace
-    fileContents = fileContents.substr(fileContents.find_first_not_of(' '));
-
     // if string constant
-    if('"' == fileContents[0]){
+    if('"' == fileContents[fileContents.find_first_not_of(' ')]){
+        // strip space
+        fileContents = fileContents.substr(fileContents.find_first_not_of(' '));
+
         int end = fileContents.substr(1).find_first_of('"') + 2;
         currentToken = fileContents.substr(0, end);
         fileContents = fileContents.substr(end);
@@ -142,7 +146,7 @@ void jackTokenizer::advance(){
 
 tokentype jackTokenizer::tokenType(){
     if(string::npos != currentToken.find_first_of(symbolString)){
-        std::cout << "'" << currentToken << "' type: symbol" << std::endl;
+        // std::cout << "'" << currentToken << "' type: symbol" << std::endl;
         return tokentype::SYMBOL;
     }
 
@@ -151,7 +155,7 @@ tokentype jackTokenizer::tokenType(){
     // keywords.length() = 21
     for(int i = 0; i < 21; i++){
         if(keywords[i].compare(currentToken) == 0){
-            std::cout << "'" << currentToken << "' type: keyword" << std::endl;
+            // std::cout << "'" << currentToken << "' type: keyword" << std::endl;
             return tokentype::KEYWORD;
         }
     }
@@ -166,7 +170,7 @@ tokentype jackTokenizer::tokenType(){
             && string::npos == currentToken
             .substr(1, currentToken.length() - 2).find_first_of('"')){
 
-            std::cout << "'" << currentToken << "' type: string_const" << std::endl;
+            // std::cout << "'" << currentToken << "' type: string_const" << std::endl;
             return tokentype::STRING_CONST;
         } else{
             std::cout << "ERROR: INVALID STRING: " << currentToken << std::endl;
@@ -179,7 +183,7 @@ tokentype jackTokenizer::tokenType(){
     try{
         int ret = std::stoi(currentToken);
         if(ret > 0){
-            std::cout << "'" << currentToken << "' type: int_const" << std::endl;
+            // std::cout << "'" << currentToken << "' type: int_const" << std::endl;
             return tokentype::INT_CONST;
         }
     } catch(std::exception e){} // fail check
@@ -187,7 +191,7 @@ tokentype jackTokenizer::tokenType(){
     // check that only A-Z, a-z, 0-9, _
     // and first char != _
     
-    std::cout << "'" << currentToken << "' type: identifier" << std::endl;
+    // std::cout << "'" << currentToken << "' type: identifier" << std::endl;
     return tokentype::IDENTIFIER;
 
     return tokentype::INVALID;
