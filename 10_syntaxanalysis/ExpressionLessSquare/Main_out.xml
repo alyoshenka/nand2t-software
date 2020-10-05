@@ -13,7 +13,7 @@
 		<keyword> void </keyword>
 		<identifier> main </identifier>
 		<symbol> ( </symbol>
-			<parameterList>
+		<parameterList>
 			</parameterList>
 		<symbol> ) </symbol>
 		<subroutineBody>
@@ -71,7 +71,7 @@
 			<keyword> void </keyword>
 			<identifier> test </identifier>
 			<symbol> ( </symbol>
-				<parameterList>
+			<parameterList>
 				</parameterList>
 			<symbol> ) </symbol>
 			<subroutineBody>
