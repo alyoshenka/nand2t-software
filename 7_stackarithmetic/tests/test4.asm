@@ -26,344 +26,182 @@ D=A
 M=D
 
 // initialize variables
-@cur_func // current function, NO reset
-@line_num // line function couter, DOES reset
 @eq_val // value of equality check
-@pp_val // the pushed/popped value
-@pp_addr // the address of the pushed/popped value
+@cmp_addr // address to return to after comparing
 @true
 M=-1 // set true constant
 @false
 M=0 // set false constant
 
 @MAIN
-0;JMP // start program
+0;JMP
 
-(ADD)
-   @SP // go to stack pointer
-   M=M-1 // decrement stack
-   A=M // go to top of stack
-   D=M // store top value
-   A=A-1 // get address of next value
-   D=D+M // add
-   M=D // store
-   A=A+1 // get top value
-   M=0 // clear
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(SUB)
-   @SP // go to stack pointer
-   M=M-1 // decrement stack
-   A=M // go to top of stack
-   D=M // store top value
-   A=A-1 // get address of next value
-   D=M-D // sub
-   M=D // store
-   A=A+1 // get top value
-   M=0 // clear
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(NEG)
-   @SP // go to stack pointer
-   A=M-1 // go to top value of stack
-   M=-M // negate value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(EQ)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=D-M // subtract
-   @TRUE // set dest for true
-   D;JEQ // jump if 0
-   @FALSE // set dest for false
-   D;JNE // jump if not 0
-(TRUE)
+(SET_TRUE)
    @true
-   D=M // get true value
+   D=M
    @eq_val
-   M=D // store value
-   @AFTER_SET
-   0;JMP // return control
-(FALSE)
+   M=D
+   @RETURN_EQ
+   0;JMP
+(SET_FALSE)
    @false
-   D=M // get false value
+   D=M
    @eq_val
-   M=D // store value
-   @AFTER_SET
-   0;JMP // return control
-(AFTER_SET)
+   M=D
+   @RETURN_EQ
+   0;JMP
+(RETURN_EQ)
    @eq_val
-   D=M // take value
-   @SP // go to stack pointer
-   A=M-1 // go to top value
-   M=D; // set value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(GT)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=M-D // subtract
-   @TRUE // set dest for true
-   D;JGT // jump if 0
-   @FALSE // set dest for false
-   D;JLE // jump if not 0
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(LT)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=M-D // subtract
-   @TRUE // set dest for true
-   D;JLT // jump if 0
-   @FALSE // set dest for false
-   D;JGE // jump if not 0
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(AND)
-   @SP // go to stack pointer
-   M=M-1 // decrement value to get first number
-   A=M // go to stack
-   D=M // store first number
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   @SP // go to stack pointer
-   A=M // go to stack
-   M=M&D // calculate value
-   @SP // go to stack pointer
-   M=M+1 // increment value;
-   A=M // go to top of stack
-   M=0 // clear value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(OR)
-   @SP // go to stack pointer
-   M=M-1 // decrement value to get first number
-   A=M // go to stack
-   D=M // store first number
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   @SP // go to stack pointer
-   A=M // go to stack
-   M=M|D // calculate value
-   @SP // go to stack pointer
-   M=M+1 // increment value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(NOT)
-   @SP // go to stack pointer
-   A=M-1 // go to top value of stack
-   M=!M // bitwise negation
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-// push the value at pp_val to the stack
-// (assumes pp_val has been set)
-(PUSH)
-   @pp_val
-   D=M // store value
+   D=M
    @SP
-   A=M // go to top of stack
-   M=D // set value
-   @SP
-   M=M+1 // incr
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
+   A=M-1
+   M=D
+   @cmp_addr
+   A=M
+   0;JMP
 
-// pop from stack to pp_addr
-// (assumes pp_addr has been set)
-(POP)
-   @SP
-   M=M-1 // decr
-   A=M // top of stack
-   D=M // top value
-   M=0 // clear
-   @pp_addr
-   A=M // new address
-   M=D // set value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-// main function loop
 (MAIN)
-   @line_num
-   M=0 // reset line counter
 
-   @120 // import number constant
+// import number constant
+   @120
    D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
 
-   @line_num
-   M=M+1 // increment
-
-   @121 // import number constant
+// import number constant
+   @121
    D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
 
-   @line_num
-   M=M+1 // increment
-
-   @122 // import number constant
+// import number constant
+   @122
    D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
 
-   @line_num
-   M=M+1 // increment
-
-   @123 // import number constant
+// import number constant
+   @123
    D=A
-   @pp_val
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// pop to that
+   @THAT
+   D=M // base
+   @0
+   D=D+A
+   @R13
+   M=D
+   @SP
+   AM=M-1
+   D=M
+   @R13
+   A=M
    M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
 
-   @line_num
-   M=M+1 // increment
+// pop to this
+   @THIS
+   D=M // base
+   @0
+   D=D+A
+   @R13
+   M=D
+   @SP
+   AM=M-1
+   D=M
+   @R13
+   A=M
+   M=D // set
 
-    @THAT
-   D=M // base of segment
-   @0 // import index
-   D=D+A // calc RAM address
-   @pp_addr
-   M=D // set address
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @POP
-   D;JEQ
+// pop to arg
+   @ARG
+   D=M // base
+   @0
+   D=D+A
+   @R13
+   M=D
+   @SP
+   AM=M-1
+   D=M
+   @R13
+   A=M
+   M=D // set
 
-   @line_num
-   M=M+1 // increment
-
-    @THIS
-   D=M // base of segment
-   @0 // import index
-   D=D+A // calc RAM address
-   @pp_addr
-   M=D // set address
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @POP
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-    @ARG
-   D=M // base of segment
-   @0 // import index
-   D=D+A // calc RAM address
-   @pp_addr
-   M=D // set address
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @POP
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
+// pop to local
    @LCL
-   D=M // base of segment
-   @0 // import index
-   D=D+A // calc RAM address
-   @pp_addr
-   M=D // set address
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @POP
-   D;JEQ
+   D=M // base
+   @0
+   D=D+A
+   @R13
+   M=D
+   @SP
+   AM=M-1
+   D=M
+   @R13
+   A=M
+   M=D // set
 
-   @line_num
-   M=M+1 // increment
+// local
+   @LCL
+   D=M
+   @0
+   A=A+D
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
 
-   @END
-   0;JMP // finish 
+// argument
+   @ARG
+   D=M
+   @0
+   A=A+D
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// this
+   @THIS
+   D=M
+   @0
+   A=A+D
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// that
+   @THAT
+   D=M
+   @0
+   A=A+D
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
 
 (END)
-   @END
-   0;JMP
+@END
+0;JMP

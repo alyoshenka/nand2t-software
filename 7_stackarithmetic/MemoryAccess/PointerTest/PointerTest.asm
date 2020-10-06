@@ -33,23 +33,37 @@ M=-1 // set true constant
 @false
 M=0 // set false constant
 
+@MAIN
+0;JMP
+
 (SET_TRUE)
    @true
    D=M
    @eq_val
    M=D
-   @cmp_addr
+   @RETURN_EQ
    0;JMP
 (SET_FALSE)
    @false
    D=M
    @eq_val
    M=D
+   @RETURN_EQ
+   0;JMP
+(RETURN_EQ)
+   @eq_val
+   D=M
+   @SP
+   A=M-1
+   M=D
    @cmp_addr
+   A=M
    0;JMP
 
+(MAIN)
+
 // import number constant
-    @3030
+   @3030
    D=A
    @SP
    A=M
@@ -65,7 +79,7 @@ M=0 // set false constant
    M=D
 
 // import number constant
-    @3040
+   @3040
    D=A
    @SP
    A=M
@@ -81,7 +95,7 @@ M=0 // set false constant
    M=D
 
 // import number constant
-    @32
+   @32
    D=A
    @SP
    A=M
@@ -91,16 +105,20 @@ M=0 // set false constant
 
 // pop to this
    @THIS
-   D=M
+   D=M // base
    @2
-   D=A+D
+   D=D+A
+   @R13
+   M=D
    @SP
-   A=M   M=D
-   @SP
-   M=M+1
+   AM=M-1
+   D=M
+   @R13
+   A=M
+   M=D // set
 
 // import number constant
-    @46
+   @46
    D=A
    @SP
    A=M
@@ -110,13 +128,17 @@ M=0 // set false constant
 
 // pop to that
    @THAT
-   D=M
+   D=M // base
    @6
-   D=A+D
+   D=D+A
+   @R13
+   M=D
    @SP
-   A=M   M=D
-   @SP
-   M=M+1
+   AM=M-1
+   D=M
+   @R13
+   A=M
+   M=D // set
 
 // push from pointer (R3)
    @R3
@@ -147,7 +169,8 @@ M=0 // set false constant
 // this
    @THIS
    D=M
-   @2   A=A+D
+   @2
+   A=A+D
    D=M
    @SP
    A=M
@@ -158,7 +181,7 @@ M=0 // set false constant
 // Sub
    @SP
    M=M-1 // decr
-   A=M-1 // top value
+   A=M // top value
    D=M
    A=A-1
    M=M-D
@@ -166,7 +189,8 @@ M=0 // set false constant
 // that
    @THAT
    D=M
-   @6   A=A+D
+   @6
+   A=A+D
    D=M
    @SP
    A=M
@@ -181,3 +205,7 @@ M=0 // set false constant
    D=M
    A=A-1
    M=M+D
+
+(END)
+@END
+0;JMP

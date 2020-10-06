@@ -32,10 +32,10 @@ namespace functions{
         "// Sub\n"
         "   @SP\n"
         "   M=M-1 // decr\n"
-        "   A=M-1 // top value\n"
+        "   A=M // top value\n"
         "   D=M\n"
         "   A=A-1\n"
-        "   M=D-M\n"; // might need to switch
+        "   M=M-D\n"; // might need to switch
 
     const string neg = 
         "// Neg\n"

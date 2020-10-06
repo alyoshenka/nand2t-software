@@ -165,10 +165,11 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
             line =
                 "// static\n"
                 "   @";
-            line.append(fileName);
+            line.append(fileName.substr(fileName.find_last_of('\\')+1));
             line.append(".");
             line.append(std::to_string(index));
             line.append(
+                "\n"
                 "   D=M\n"
                 "   @SP\n"
                 "   A=M\n"
@@ -185,6 +186,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
                 "   @";
             line.append(std::to_string(index));
             line.append(
+                "\n"
                 "   A=A+D\n"
                 "   D=M\n"
                 "   @SP\n"
@@ -202,6 +204,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
                 "   @";
             line.append(std::to_string(index));
             line.append(
+                "\n"
                 "   A=A+D\n"
                 "   D=M\n"
                 "   @SP\n"
@@ -219,6 +222,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
                 "   @";
             line.append(std::to_string(index));
             line.append(
+                "\n"
                 "   A=A+D\n"
                 "   D=M\n"
                 "   @SP\n"
@@ -236,6 +240,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
                 "   @";
             line.append(std::to_string(index));
             line.append(
+                "\n"
                 "   A=A+D\n"
                 "   D=M\n"
                 "   @SP\n"
@@ -257,68 +262,80 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
             line =
                 "// pop to local\n"
                 "   @LCL\n"
-                "   D=M\n"
+                "   D=M // base\n"
                 "   @";
             line.append(std::to_string(index));
             line.append(
                 "\n"
-                "   D=A+D\n"
-                "   @SP\n"
-                "   A=M"
+                "   D=D+A\n"
+                "   @R13\n"
                 "   M=D\n"
                 "   @SP\n"
-                "   M=M+1\n"
+                "   AM=M-1\n"
+                "   D=M\n"
+                "   @R13\n"
+                "   A=M\n"
+                "   M=D // set\n"
             );
         } 
         else if(segment.compare("argument") == 0){
             line =
-                "// pop to argument\n"
+                "// pop to arg\n"
                 "   @ARG\n"
-                "   D=M\n"
+                "   D=M // base\n"
                 "   @";
             line.append(std::to_string(index));
             line.append(
                 "\n"
-                "   D=A+D\n"
-                "   @SP\n"
-                "   A=M"
+                "   D=D+A\n"
+                "   @R13\n"
                 "   M=D\n"
                 "   @SP\n"
-                "   M=M+1\n"
+                "   AM=M-1\n"
+                "   D=M\n"
+                "   @R13\n"
+                "   A=M\n"
+                "   M=D // set\n"
             );
         } 
         else if(segment.compare("this") == 0){
             line =
                 "// pop to this\n"
                 "   @THIS\n"
-                "   D=M\n"
+                "   D=M // base\n"
                 "   @";
             line.append(std::to_string(index));
             line.append(
                 "\n"
-                "   D=A+D\n"
-                "   @SP\n"
-                "   A=M"
+                "   D=D+A\n"
+                "   @R13\n"
                 "   M=D\n"
                 "   @SP\n"
-                "   M=M+1\n"
+                "   AM=M-1\n"
+                "   D=M\n"
+                "   @R13\n"
+                "   A=M\n"
+                "   M=D // set\n"
             );
         } 
         else if(segment.compare("that") == 0){
             line =
                 "// pop to that\n"
                 "   @THAT\n"
-                "   D=M\n"
+                "   D=M // base\n"
                 "   @";
             line.append(std::to_string(index));
             line.append(
                 "\n"
-                "   D=A+D\n"
-                "   @SP\n"
-                "   A=M"
+                "   D=D+A\n"
+                "   @R13\n"
                 "   M=D\n"
                 "   @SP\n"
-                "   M=M+1\n"
+                "   AM=M-1\n"
+                "   D=M\n"
+                "   @R13\n"
+                "   A=M\n"
+                "   M=D // set\n"
             );
         } 
         else if(segment.compare("temp") == 0){
@@ -356,7 +373,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
                 "   AM=M-1\n"
                 "   D=M\n"
                 "   @";
-            line.append(fileName);
+            line.append(fileName.substr(fileName.find_last_of('\\') +1));
             line.append(".");
             line.append(std::to_string(index));
             line.append(
