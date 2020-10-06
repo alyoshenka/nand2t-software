@@ -22,6 +22,11 @@ enum segment{
     TEMP
 };
 
+const char* segmentStrings[] = {
+    "const", "arg", "local", "static", 
+    "this", "that", "pointer", "temp"
+};
+
 enum command{
     ADD,
     SUB,
@@ -33,6 +38,11 @@ enum command{
     OR,
     NOT
 };
+
+const char* commandStrings[] = {
+    "add", "sub", "neg", "eq", 
+    "gt", "lt", "and", "or", "not"
+}
 
 enum tokentype{
     INVALID,

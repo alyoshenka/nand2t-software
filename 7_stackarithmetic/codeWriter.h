@@ -1,8 +1,8 @@
 #pragma once
 
-
 #include <string>
 #include <fstream>
+#include <cassert>
 
 #include "commandType.h"
 
@@ -13,6 +13,9 @@ using std::ofstream;
 class codeWriter {
     ofstream outFile;
     string fileName;
+
+    int cmpCnt;
+
 public:
     // opens output file and gets ready to write to it
     codeWriter(const string file);

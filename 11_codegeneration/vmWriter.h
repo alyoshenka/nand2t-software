@@ -3,12 +3,18 @@
 #include "constructs.h";
 
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <cassert>
 
 using std::string;
+using std::ofstream;
 
 /** Emits VM commands into a file, 
  * using the VM command syntax. */
 class vmWriter{
+
+    ofstream outStream;
 
 public:
 
@@ -45,4 +51,7 @@ public:
 
     /** Closes the output file. */
     void close();
+
+    string segToStr(segment seg);
+    string comToStr(command com);
 };

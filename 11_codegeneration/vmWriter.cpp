@@ -1,45 +1,60 @@
 #include "vmWriter.h"
 
 vmWriter::vmWriter(string outFile){
+    std::cout << "opening " << outFile << " for writing" << std::endl;
 
+    outStream.open(outFile);
+
+    assert(outStream.is_open());
+
+    // continue
 }
 
 void vmWriter::writePush(segment seg, int idx){
-    return;
+    outStream << "push " << segToStr(seg) << " " << idx << "\n";
 }
 
 void vmWriter::writePop(segment seg, int idx){
-    return;
+    outStream << "pop " << segToStr(seg) << " " << idx << "\n";
 }
 
 void vmWriter::writeArithmetic(command com){
-    return;
+    outStream << comToStr(com) << "\n";
 }
 
 void vmWriter::writeLabel(string label){
-    return;
+    outStream << "label " << label << "\n";
 }
 
 void vmWriter::writeGoto(string label){
-    return;
+    outStream << "goto " << label << "\n";
 }
 
 void vmWriter::writeIf(string label){
-    return;
+    outStream << "if-goto " << label << "\n";
 }
 
 void vmWriter::writeCall(string name, int argCnt){
-    return;
+    outStream << "call " << name << " " << argCnt << "\n";
 }
 
 void vmWriter::writeFunction(string name, int argCnt){
-    return;
+    outStream << "function " << name << " " << argCnt << "\n";
 }
 
 void vmWriter::writeReturn(){
-    return;
+    outStream << "return\n";
 }
 
 void vmWriter::close(){
-    return;
+    outStream.close();
+    std::cout << "closed output stream" << std::endl;
+}
+
+string vmWriter::segToStr(segment seg){
+    return segmentStrings[seg];
+}
+
+string vmWriter::comToStr(command com){
+    return commandStrings[com];
 }

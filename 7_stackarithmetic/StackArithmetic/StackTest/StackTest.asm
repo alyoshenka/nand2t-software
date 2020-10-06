@@ -26,726 +26,456 @@ D=A
 M=D
 
 // initialize variables
-@cur_func // current function, NO reset
-@line_num // line function couter, DOES reset
 @eq_val // value of equality check
-@pp_val // the pushed/popped value
-@pp_addr // the address of the pushed/popped value
+@cmp_addr // address to return to after comparing
 @true
 M=-1 // set true constant
 @false
 M=0 // set false constant
 
 @MAIN
-0;JMP // start program
+0;JMP
 
-(ADD)
-   @SP // go to stack pointer
-   M=M-1 // decrement stack
-   A=M // go to top of stack
-   D=M // store top value
-   A=A-1 // get address of next value
-   D=D+M // add
-   M=D // store
-   A=A+1 // get top value
-   M=0 // clear
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
+(SET_TRUE)
+   @true
+   D=M
+   @eq_val
+   M=D
+   @RETURN_EQ
+   0;JMP
+(SET_FALSE)
+   @false
+   D=M
+   @eq_val
+   M=D
+   @RETURN_EQ
+   0;JMP
+(RETURN_EQ)
+   @eq_val
+   D=M
+   @SP
+   A=M-1
+   M=D
+   @cmp_addr
+   A=M
+   0;JMP
 
-(SUB)
-   @SP // go to stack pointer
-   M=M-1 // decrement stack
-   A=M // go to top of stack
-   D=M // store top value
-   A=A-1 // get address of next value
-   D=M-D // sub
-   M=D // store
-   A=A+1 // get top value
-   M=0 // clear
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
+(MAIN)
 
-(NEG)
+// import number constant
+   @17
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @17
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Eq
+   @cmp1
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JEQ
+   @SET_FALSE
+   D;JNE
+   (cmp1)
+
+// import number constant
+   @17
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @16
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Eq
+   @cmp2
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JEQ
+   @SET_FALSE
+   D;JNE
+   (cmp2)
+
+// import number constant
+   @16
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @17
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Eq
+   @cmp3
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JEQ
+   @SET_FALSE
+   D;JNE
+   (cmp3)
+
+// import number constant
+   @892
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @891
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp4
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JLT
+   @SET_FALSE
+   D;JGE
+   (cmp4)
+
+// import number constant
+   @891
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @892
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp5
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JLT
+   @SET_FALSE
+   D;JGE
+   (cmp5)
+
+// import number constant
+   @891
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @891
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp6
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JLT
+   @SET_FALSE
+   D;JGE
+   (cmp6)
+
+// import number constant
+   @32767
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @32766
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp7
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JGT
+   @SET_FALSE
+   D;JLE
+   (cmp7)
+
+// import number constant
+   @32766
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @32767
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp8
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JGT
+   @SET_FALSE
+   D;JLE
+   (cmp8)
+
+// import number constant
+   @32766
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @32766
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+   @cmp9
+   D=A
+   @cmp_addr
+   M=D // save return address
+   // sub
+   @SP
+   M=M-1 // decr
+   A=M
+   D=M // top value
+   A=A-1
+   MD=M-D // sub, result in MD
+   // check against 0
+   @SET_TRUE
+   D;JGT
+   @SET_FALSE
+   D;JLE
+   (cmp9)
+
+// import number constant
+   @57
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @31
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// import number constant
+   @53
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Add
+   @SP
+   M=M-1 // decr
+   A=M // top value
+   D=M
+   A=A-1
+   M=M+D
+
+// import number constant
+   @112
+   D=A
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Sub
+   @SP
+   M=M-1 // decr
+   A=M-1 // top value
+   D=M
+   A=A-1
+   M=D-M
+
+// Neg
    @SP // go to stack pointer
    A=M-1 // go to top value of stack
    M=-M // negate value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
 
-(EQ)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=D-M // subtract
-   @TRUE // set dest for true
-   D;JEQ // jump if 0
-   @FALSE // set dest for false
-   D;JNE // jump if not 0
-(TRUE)
-   @true
-   D=M // get true value
-   @eq_val
-   M=D // store value
-   @AFTER_SET
-   0;JMP // return control
-(FALSE)
-   @false
-   D=M // get false value
-   @eq_val
-   M=D // store value
-   @AFTER_SET
-   0;JMP // return control
-(AFTER_SET)
-   @eq_val
-   D=M // take value
-   @SP // go to stack pointer
-   A=M-1 // go to top value
-   M=D; // set value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(GT)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=M-D // subtract
-   @TRUE // set dest for true
-   D;JGT // jump if 0
-   @FALSE // set dest for false
-   D;JLE // jump if not 0
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(LT)
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   A=M // go to top of stack
-   D=M // store value in D
-   M=0 // clear value
-   @SP // go to stack pointer
-   A=M-1 // go to next value
-   D=M-D // subtract
-   @TRUE // set dest for true
-   D;JLT // jump if 0
-   @FALSE // set dest for false
-   D;JGE // jump if not 0
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(AND)
-   @SP // go to stack pointer
-   M=M-1 // decrement value to get first number
-   A=M // go to stack
-   D=M // store first number
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   @SP // go to stack pointer
-   A=M // go to stack
-   M=M&D // calculate value
-   @SP // go to stack pointer
-   M=M+1 // increment value;
-   A=M // go to top of stack
-   M=0 // clear value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(OR)
-   @SP // go to stack pointer
-   M=M-1 // decrement value to get first number
-   A=M // go to stack
-   D=M // store first number
-   @SP // go to stack pointer
-   M=M-1 // decrement value
-   @SP // go to stack pointer
-   A=M // go to stack
-   M=M|D // calculate value
-   @SP // go to stack pointer
-   M=M+1 // increment value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-(NOT)
-   @SP // go to stack pointer
-   A=M-1 // go to top value of stack
-   M=!M // bitwise negation
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-// push the value at pp_val to the stack
-// (assumes pp_val has been set)
-(PUSH)
-   @pp_val
-   D=M // store value
-   @SP
-   A=M // go to top of stack
-   M=D // set value
-   @SP
-   M=M+1 // incr
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
-
-// pop from stack to pp_addr
-// (assumes pp_addr has been set)
-(POP)
+// And
    @SP
    M=M-1 // decr
-   A=M // top of stack
-   D=M // top value
-   M=0 // clear
-   @pp_addr
-   A=M // new address
-   M=D // set value
-   @cur_func
-   M=M+1 // increment
-   @MAIN
-   0;JMP // return control to main
+   A=M // top value
+   D=M
+   A=A-1
+   M=M&D
 
-// main function loop
-(MAIN)
-   @line_num
-   M=0 // reset line counter
-
-   @17 // import number constant
+// import number constant
+   @82
    D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @17 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @EQ
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @17 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @16 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @EQ
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @16 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @17 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @EQ
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @892 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @892 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @891 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @LT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32767 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32767 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @32766 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @GT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @57 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @31 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @53 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @ADD
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @112 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @SUB
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @NEG
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @AND
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @82 // import number constant
-   D=A
-   @pp_val
-   M=D // set
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @PUSH
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @OR
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @cur_func
-   D=M // store value
-   @line_num
-   A=M // store value
-   D=D-A // check to run next func
-   @NOT
-   D;JEQ
-
-   @line_num
-   M=M+1 // increment
-
-   @END
-   0;JMP // finish 
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Or
+   @SP
+   M=M-1 // decr
+   A=M // top value
+   D=M
+   A=A-1
+   M=M|D
+
+// Not
+   @SP
+   A=M-1
+   M=!M
 
 (END)
-   @END
-   0;JMP
+@END
+0;JMP
