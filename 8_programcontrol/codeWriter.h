@@ -1,8 +1,8 @@
 #pragma once
 
-
 #include <string>
 #include <fstream>
+#include <cassert>
 
 #include "commandType.h"
 
@@ -13,6 +13,9 @@ using std::ofstream;
 class codeWriter {
     ofstream outFile;
     string fileName;
+
+    int cmpCnt;
+
 public:
     // opens output file and gets ready to write to it
     codeWriter(const string file);
@@ -31,19 +34,19 @@ public:
     void writePushPop(commandType command, string segment, int index);
     // closes the output file
     void close();
-    /* writes assembly code that effects the VM initialization
-        this code must be placed at the beginning of the output file */
+    /** writes assembly code that affects the 
+     * VM initialization, also called bootstrap 
+     * code. This code must be placed at the
+     * beginning of the file. */
     void writeInit();
-    // writes assembly code that effects the label command
+    /* Writes assembly code that affects
+     * the label command. */
     void writeLabel(string label);
-    // writes assembly code that effects the goto command
+    /** writes assembly code that affects
+        the goto command. */
     void writeGoto(string label);
-    // writes assembly code that effects the if-goto command
     void writeIf(string label);
-    // writes assembly code that effects the call command
-    void writeCall(string label, int numArgs);
-    // writes assembly code that effects the return command
+    void writeCall(string function, int argCnt);
     void writeReturn();
-    // writes assembly code that effects the function command
-    void writeFunction(string label, int numLocals);
+    void writeFunction(string label, int argCnt);
 };

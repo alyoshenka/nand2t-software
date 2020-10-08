@@ -52,39 +52,53 @@ int main(int cnt, char* args[]){
                 if(t == commandType::C_PUSH 
                     || t == commandType::C_POP
                     || t == commandType::C_FUNCTION
-                    || t == commandType::C_CALL){
-                    
+                    || t == commandType::C_CALL)
+                {                    
                     int arg2 = p.arg2();
-                    
-                    if(t == commandType::C_PUSH
-                        || t == commandType::C_POP){
-                        
+                    switch (t)
+                    {
+                    case commandType::C_PUSH:
                         cw.writePushPop(t, arg1, arg2);
-                    }else if(t == commandType::C_CALL){
-                        cw.writeCall(arg1, arg2);
-                    } else if(t == commandType::C_FUNCTION){
+                        break;
+                    case commandType::C_POP:
+                        cw.writePushPop(t, arg1, arg2);
+                        break;
+                    case commandType::C_FUNCTION:
                         cw.writeFunction(arg1, arg2);
-                    } else {
-                        std::cout << "ERROR WRITING 2 ARGS" << std::endl;
+                        break;
+                    case commandType::C_CALL:
+                        cw.writeCall(arg1, arg2);
+                    default:
+                        std::cout << "INVALID TYPE(2): " << t << std::endl;
+                        break;
                     }
-                }else{
-                    if(t == commandType::C_ARITHMETIC){
+                }
+                else{
+                    switch (t)
+                    {
+                    case commandType::C_ARITHMETIC:
                         cw.writeArithmetic(arg1);
-                    } else if(t == commandType::C_GOTO){
-                        cw.writeGoto(arg1);
-                    } else if(t == commandType::C_IF){
-                        cw.writeIf(arg1);
-                    } else if(t == commandType::C_LABEL){
+                        break;
+                    case commandType::C_LABEL:
                         cw.writeLabel(arg1);
-                    } else {
-                        std::cout << "ERROR WRITING 1 ARG" << std::endl;
+                        break;
+                    case commandType::C_GOTO:
+                        cw.writeGoto(arg1);
+                        break;
+                    case commandType::C_IF:
+                        cw.writeIf(arg1);
+                        break;
+                    default:
+                        std::cout << "INVALID TYPE(1): " << t << std::endl;
+                        break;
                     }
                 }
             } else{
-                if(t == commandType::C_RETURN){
+                if(commandType::C_RETURN == t){
                     cw.writeReturn();
-                } else{
-                    std::cout << "ERROR WRITING 0 ARGS" << std::endl;
+                }
+                else {
+                    std::cout << "INVALID TYPE(0): " << t << std::endl;
                 }
             }
 

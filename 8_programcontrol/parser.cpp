@@ -35,7 +35,7 @@ void parser::advance(){
     }
 
     // strip inline comments
-    int com = curCmd.find_first_of(comment);
+    int com = curCmd.find_first_of('/');
     if(com != string::npos){
         curCmd = curCmd.substr(0, com);
     }
@@ -72,24 +72,12 @@ commandType parser::currentCommand(){
         return commandType::C_RETURN;
     } else {
         // check validity
+
         return commandType::C_ARITHMETIC;
     }
 }
 
 string parser::arg1(){
-    // strip inline comments
-    int com = curCmd.find_first_of("/");
-    curCmd = curCmd.substr(0, com);
-
-    // need to strip trailing whitespace
-    // SORRY
-    char c = curCmd[curCmd.length() - 1];
-    while(c == ' '){
-        curCmd = curCmd.substr(0, curCmd.length() - 1);
-        c = curCmd[curCmd.length() - 1];
-    }
-
-    // strip whitespace
     int l = curCmd.find_first_of(" ");
     int r = curCmd.find_last_of(" ");
     // if last word
@@ -102,8 +90,6 @@ string parser::arg1(){
 
 int parser::arg2(){
     int l = curCmd.find_last_of(" ");
-    int r = curCmd.find_last_of("0123456789");
-    int len = r - l;
-    string num = curCmd.substr(l+1, len);
+    string num = curCmd.substr(l, curCmd.length() - l);
     return std::stoi(num);
 }
