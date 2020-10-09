@@ -152,6 +152,8 @@ M=0 // set false constant
    D=M
    A=A-1
    M=M-D
+
+//return
 // frame = r14
 @LCL
 D=M
@@ -173,12 +175,12 @@ A=M
 M=D
 // sp=arg+1
 @ARG
-D=A+1
+D=M+1
 @SP
 M=D
 // that=*(frame-1)
 @R14
-D=A-1
+D=M-1
 @THAT
 M=D
 // this=*(frame-2)
@@ -205,6 +207,7 @@ M=D
 // goto ret
 @R15
 M;JMP
+
 (END)
 @END
 0;JMP

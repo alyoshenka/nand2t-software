@@ -511,6 +511,8 @@ void codeWriter::writeCall(string func, int args){
 void codeWriter::writeReturn(){
     std::cout << "writing return" << std::endl;
 
+    outFile << "\n// return\n";
+
     outFile << "// frame = r14\n";
     outFile << 
         "@LCL\n"
@@ -527,7 +529,7 @@ void codeWriter::writeReturn(){
         "@R15 // ret\n"
         "M=D\n";
 
-    outFile << "// *arg=pop()\n";
+    outFile << "// *arg=pop() reposition return value\n";
     outFile <<
         "@SP\n"
         "AM=M-1\n"
@@ -539,14 +541,14 @@ void codeWriter::writeReturn(){
     outFile << "// sp=arg+1\n";
     outFile <<
         "@ARG\n"
-        "D=A+1\n"
+        "D=M+1\n"
         "@SP\n"
         "M=D\n";
 
     outFile << "// that=*(frame-1)\n";
     outFile << 
         "@R14\n"
-        "D=A-1\n"
+        "D=M-1\n"
         "@THAT\n"
         "M=D\n";
 
@@ -580,7 +582,7 @@ void codeWriter::writeReturn(){
     outFile << "// goto ret\n";
     outFile <<
         "@R15\n"
-        "M;JMP";
+        "M;JMP\n";
 }
 
 void codeWriter::writeFunction(string func, int args){
