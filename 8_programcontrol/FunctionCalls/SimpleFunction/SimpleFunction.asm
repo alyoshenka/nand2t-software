@@ -61,33 +61,23 @@ M=0 // set false constant
    0;JMP
 
 (MAIN)
-
-// import number constant
-   @0
-   D=A
+// label function entry
+(SimpleFunction.test)
+    // repeat 2times
+    // initialze args to 0 (push to stack
    @SP
    A=M
-   M=D
+   M=0
+   @SP
+   M=M+1
+   @SP
+   A=M
+   M=0
    @SP
    M=M+1
 
-// pop to local
+// local
    @LCL
-   D=M // base
-   @0
-   D=D+A
-   @R13
-   M=D
-   @SP
-   AM=M-1
-   D=M
-   @R13
-   A=M
-   M=D // set
-(LOOP_START)
-
-// argument
-   @ARG
    D=M
    @0
    A=A+D
@@ -100,6 +90,31 @@ M=0 // set false constant
 
 // local
    @LCL
+   D=M
+   @1
+   A=A+D
+   D=M
+   @SP
+   A=M
+   M=D
+   @SP
+   M=M+1
+
+// Add
+   @SP
+   M=M-1 // decr
+   A=M // top value
+   D=M
+   A=A-1
+   M=M+D
+
+// Not
+   @SP
+   A=M-1
+   M=!M
+
+// argument
+   @ARG
    D=M
    @0
    A=A+D
@@ -118,35 +133,12 @@ M=0 // set false constant
    A=A-1
    M=M+D
 
-// pop to local
-   @LCL
-   D=M // base
-   @0
-   D=D+A
-   @R13
-   M=D
-   @SP
-   AM=M-1
-   D=M
-   @R13
-   A=M
-   M=D // set
-
 // argument
    @ARG
    D=M
-   @0
+   @1
    A=A+D
    D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
-// import number constant
-   @1
-   D=A
    @SP
    A=M
    M=D
@@ -160,51 +152,59 @@ M=0 // set false constant
    D=M
    A=A-1
    M=M-D
-
-// pop to arg
-   @ARG
-   D=M // base
-   @0
-   D=D+A
-   @R13
-   M=D
-   @SP
-   AM=M-1
-   D=M
-   @R13
-   A=M
-   M=D // set
-
-// argument
-   @ARG
-   D=M
-   @0
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-// if-goto LOOP_START
+// frame = r14
+@LCL
+D=M
+@R14 // lcl
+M=D
+// ret = *(lcl-5)
+@5
+D=A
+@R14
+D=M-D
+@R15 // ret
+M=D
+// *arg=pop()
 @SP
 AM=M-1
 D=M
-@LOOP_START
-D;JNE
-
-// local
-   @LCL
-   D=M
-   @0
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
+@ARG
+A=M
+M=D
+// sp=arg+1
+@ARG
+D=A+1
+@SP
+M=D
+// that=*(frame-1)
+@R14
+D=A-1
+@THAT
+M=D
+// this=*(frame-2)
+@2
+D=A
+@R14
+D=M-D
+@THIS
+M=D
+// arg=*(frame-3)
+@3
+D=A
+@R14
+D=M-D
+@ARG
+M=D
+// lcl=*(frame-4)
+@4
+D=A
+@R14
+D=M-D
+@LCL
+M=D
+// goto ret
+@R15
+M;JMP
 (END)
 @END
 0;JMP
