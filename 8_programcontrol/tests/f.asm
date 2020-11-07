@@ -1,3 +1,30 @@
+// initialize SP to 256
+@256 // import 256
+D=A // set D to 256
+@SP // import SP(0)
+M=D // set mem to 256
+// VM segment allocation
+// Local
+@300
+D=A
+@LCL
+M=D
+// Argument
+@400
+D=A
+@ARG
+M=D
+// This
+@3000
+D=A
+@THIS
+M=D
+// That
+@3010
+D=A
+@THAT
+M=D
+
 // initialize variables
 @eq_val // value of equality check
 @cmp_addr // address to return to after comparing
@@ -37,96 +64,9 @@ M=0 // set false constant
 
 (MAIN)
 // label function entry
-(SimpleFunction.test)
-   // repeat 2 times
-   // initialze args to 0 (push to stack)
-   @SP
-   A=M
-   M=0
-   @SP
-   M=M+1
-   @SP
-   A=M
-   M=0
-   @SP
-   M=M+1
-
-// push from local
-   @LCL
-   D=M
-   @0
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
-// push from local
-   @LCL
-   D=M
-   @1
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
-// Add
-   @SP
-   M=M-1 // decr
-   A=M // top value
-   D=M
-   A=A-1
-   M=M+D
-
-// Not
-   @SP
-   A=M-1
-   M=!M
-
-// push from argument
-   @ARG
-   D=M
-   @0
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
-// Add
-   @SP
-   M=M-1 // decr
-   A=M // top value
-   D=M
-   A=A-1
-   M=M+D
-
-// push from argument
-   @ARG
-   D=M
-   @1
-   A=A+D
-   D=M
-   @SP
-   A=M
-   M=D
-   @SP
-   M=M+1
-
-// Sub
-   @SP
-   M=M-1 // decr
-   A=M // top value
-   D=M
-   A=A-1
-   M=M-D
+(f)
+    // repeat 0 times
+    // initialze args to 0 (push to stack)
 
 // return
 @LCL
@@ -138,8 +78,6 @@ M=D
 D=A
 @frame
 D=M-D
-A=D
-D=M
 @current_return // ret
 M=D
 // *arg=pop() reposition return value
@@ -157,8 +95,6 @@ M=D
 // that=*(frame-1)
 @frame
 D=M-1
-A=D
-D=M
 @THAT
 M=D
 // this=*(frame-2)
@@ -166,8 +102,6 @@ M=D
 D=A
 @frame
 D=M-D
-A=D
-D=M
 @THIS
 M=D
 // arg=*(frame-3)
@@ -175,8 +109,6 @@ M=D
 D=A
 @frame
 D=M-D
-A=D
-D=M
 @ARG
 M=D
 // lcl=*(frame-4)
@@ -184,8 +116,6 @@ M=D
 D=A
 @frame
 D=M-D
-A=D
-D=M
 @LCL
 M=D
 // goto ret

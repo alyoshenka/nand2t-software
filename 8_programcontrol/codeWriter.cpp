@@ -185,7 +185,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
         } 
         else if(segment.compare("local") == 0){
             line = 
-                "// local\n"
+                "// push from local\n"
                 "   @LCL\n"
                 "   D=M\n"
                 "   @";
@@ -203,7 +203,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
         } 
         else if(segment.compare("argument") == 0){
             line = 
-                "// argument\n"
+                "// push from argument\n"
                 "   @ARG\n"
                 "   D=M\n"
                 "   @";
@@ -221,7 +221,7 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
         } 
         else if(segment.compare("this") == 0){
             line = 
-                "// this\n"
+                "// push from this\n"
                 "   @THIS\n"
                 "   D=M\n"
                 "   @";
@@ -238,8 +238,8 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
             );
         } 
         else if(segment.compare("that") == 0){
-            line = 
-                "// that\n"
+            line =
+                "// push from that\n"
                 "   @THAT\n"
                 "   D=M\n"
                 "   @";
@@ -513,20 +513,21 @@ void codeWriter::writeReturn(){
 
     outFile << "\n// return\n";
 
-    outFile << "// frame = r14\n";
     outFile << 
         "@LCL\n"
         "D=M\n"
-        "@R14 // lcl\n"
+        "@frame // lcl\n"
         "M=D\n";
 
     outFile << "// ret = *(lcl-5)\n";
     outFile << 
         "@5\n"
         "D=A\n"
-        "@R14\n"
+        "@frame\n"
         "D=M-D\n"
-        "@R15 // ret\n"
+        "A=D\n"
+        "D=M\n"
+        "@current_return // ret\n"
         "M=D\n";
 
     outFile << "// *arg=pop() reposition return value\n";
@@ -547,8 +548,10 @@ void codeWriter::writeReturn(){
 
     outFile << "// that=*(frame-1)\n";
     outFile << 
-        "@R14\n"
+        "@frame\n"
         "D=M-1\n"
+        "A=D\n"
+        "D=M\n"
         "@THAT\n"
         "M=D\n";
 
@@ -556,8 +559,10 @@ void codeWriter::writeReturn(){
     outFile <<
         "@2\n"
         "D=A\n"
-        "@R14\n"
+        "@frame\n"
         "D=M-D\n"
+        "A=D\n"
+        "D=M\n"
         "@THIS\n"
         "M=D\n";
 
@@ -565,8 +570,10 @@ void codeWriter::writeReturn(){
     outFile <<
         "@3\n"
         "D=A\n"
-        "@R14\n"
+        "@frame\n"
         "D=M-D\n"
+        "A=D\n"
+        "D=M\n"       
         "@ARG\n"
         "M=D\n";
 
@@ -574,14 +581,16 @@ void codeWriter::writeReturn(){
     outFile <<
         "@4\n"
         "D=A\n"
-        "@R14\n"
+        "@frame\n"
         "D=M-D\n"
+        "A=D\n"
+        "D=M\n"    
         "@LCL\n"
         "M=D\n";
 
     outFile << "// goto ret\n";
     outFile <<
-        "@R15\n"
+        "@current_return\n"
         "M;JMP\n";
 }
 
@@ -591,8 +600,8 @@ void codeWriter::writeFunction(string func, int args){
     outFile << "// label function entry\n";
     outFile << "(" << func << ")\n";
 
-    outFile << "    // repeat " << args << "times\n";
-    outFile << "    // initialze args to 0 (push to stack\n";
+    outFile << "   // repeat " << args << " times\n";
+    outFile << "   // initialze args to 0 (push to stack)\n";
     for(int i = 0; i < args; i++){
         outFile << 
             "   @SP\n"

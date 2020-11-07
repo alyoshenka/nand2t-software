@@ -26,7 +26,7 @@
 			"type": "shell",
 			"label": "Run main executable",
 			"command": "${workspaceFolder}\\main.exe",
-			"args": ["ProgramFlow/BasicLoop/BasicLoop.vm"],
+			"args": [],
 			"problemMatcher": []
 		}
 	]
