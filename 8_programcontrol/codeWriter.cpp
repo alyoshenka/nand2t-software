@@ -3,7 +3,7 @@
 #include <iostream>
 
 codeWriter::codeWriter(const string file){
-   cmpCnt = 0;
+   cmpCnt = retAddrCnt = 0;
 
     fileName = std::string(file);
     std::cout << "opening " << fileName << " for writing" << std::endl;
@@ -18,6 +18,8 @@ codeWriter::codeWriter(const string file){
     // setup
     string line = functions::setup;       
     outFile << line;
+
+    writeInit();
 }
 
 codeWriter::~codeWriter(){
@@ -401,8 +403,8 @@ void codeWriter::writePushPop(commandType command, string segment, int index){
 
 void codeWriter::close(){
     outFile << "\n(END)\n";
-    outFile << "@END\n";
-    outFile << "0;JMP\n";
+    outFile << "    @END\n";
+    outFile << "    0;JMP\n";
     std::cout << "closing output file" << std::endl;
     outFile.close();
 }
@@ -410,102 +412,127 @@ void codeWriter::close(){
 void codeWriter::writeInit(){
     std::cout << "writing init" << std::endl;
     outFile <<
-        "// initialize global stack\n"
-        "@256\n"
-        "D=A\n"
-        "@SP\n"
-        "M=D\n"
-        "// call sys.init";
-        // more?
+        "   // initialize global stack\n"
+        "   @256\n"
+        "   D=A\n"
+        "   @SP\n"
+        "   M=D\n";
+
+    outFile << "// not sure if i should be initializing these\n";
+    outFile << 
+        "   @300\n"
+        "   D=A\n"
+        "   @LCL\n"
+        "   M=D\n"
+        "   @400\n"
+        "   D=A\n"
+        "   @ARG\n"
+        "   M=D\n"
+        "   @3000\n"
+        "   D=A\n"
+        "   @THIS\n"
+        "   M=D\n"
+        "   @3010\n"
+        "   D=A\n"
+        "   @THAT\n"
+        "   M=D\n";
+
+    writeCall("Sys.init", 0);
 }
 
 void codeWriter::writeLabel(string label){
     std::cout << "writing label " << label << std::endl;
 
-    outFile << "(" << label << ")\n";
+    outFile << "\n(" << label << ")\n";
 }
 
 void codeWriter::writeGoto(string label){
     std::cout << "writing goto " << label << std::endl;
 
-    outFile << "@" << label << "\n";
-    outFile << "0;JMP\n";
+    outFile << "   @" << label << "\n";
+    outFile << "   0;JMP\n";
 }
 
 void codeWriter::writeIf(string label){
     std::cout << "writing if-goto " << label << std::endl;
 
+    outFile << "\n";
     outFile << "// if-goto " << label << "\n";
     outFile <<
-        "@SP\n"
-        "AM=M-1\n"
-        "D=M\n"
-        "@";
+        "   @SP\n"
+        "   AM=M-1\n"
+        "   D=M\n"
+        "   @";
     outFile << label << "\n";
-    outFile << "D;JNE\n";
+    outFile << "   D;JNE\n";
 }
 
 void codeWriter::writeCall(string func, int args){
     std::cout << "writing call: " << func << " " << args << std::endl;
 
-    string retAddr = "";
+    // what is the return address?
+    string retAddr = "return-address-" + std::to_string(++retAddrCnt) + "-" + func;
 
-    outFile << "// push return address, using label below\n";
-    outFile << "@" << retAddr << "\n";
+    outFile << "\n";
+    outFile << "// call " << func << " " << args << "\n";
+    outFile << "   // push return address, using label below\n";
+    outFile << "   @" << retAddr << "\n";
     outFile <<
-        "D=A\n"
-        "@SP\n"
-        "A=M\n"
-        "M=D\n"
-        "@SP\n"
-        "M=M+1\n";
+        "   D=A\n"
+        "   @SP\n"
+        "   A=M\n"
+        "   M=D\n"
+        "   @SP\n"
+        "   M=M+1\n";
 
-    outFile << "// save LCL, ARG, THIS, THAT\n";
+    outFile << "   // save LCL, ARG, THIS, THAT\n";
     outFile << 
-        "@LCL\n"
-        "D=M\n"
-        "@SP\n"
-        "A=M\n"
-        "M=D\n"
-        "@ARG\n"
-        "D=M\n"
-        "@SP\n"
-        "AM=M+1\n"
-        "M=D\n"
-        "@THIS\n"
-        "D=M\n"
-        "@SP\n"
-        "AM=M+1\n"  
-        "M=D\n"
-        "@THAT\n"
-        "D=M\n"
-        "@SP\n"
-        "AM=M+1\n" 
-        "@SP\n"
-        "M=M+1\n";
+        "   @LCL\n"
+        "   D=M\n"
+        "   @SP\n"
+        "   A=M\n"
+        "   M=D\n"
+        "   @ARG\n"
+        "   D=M\n"
+        "   @SP\n"
+        "   AM=M+1\n"
+        "   M=D\n"
+        "   @THIS\n"
+        "   D=M\n"
+        "   @SP\n"
+        "   AM=M+1\n"  
+        "   M=D\n"
+        "   @THAT\n"
+        "   D=M\n"
+        "   @SP\n"
+        "   AM=M+1\n" 
+        "   @SP\n"
+        "   M=M+1\n";
 
-    outFile << "// reposition ARG, LCL\n";
-    outFile << "// arg=sp-n-5\n";
-    outFile << "@" << args - 5 << "\n";
+    outFile << "   // reposition ARG, LCL\n";
+    outFile << "   // arg=sp-n-5\n";
     outFile <<
-        "D=A\n"
-        "@SP\n"
-        "D=A-D\n"
-        "@ARG\n"
-        "M=D\n";
-    outFile << "// lcl=sp\n";
+        "   @SP\n"
+        "   D=M\n";
+    for(int i = 0; i < args + 5; i++){
+        outFile << "   D=D-1\n";
+    }
+        "   @ARG\n"
+        "   M=D\n";
+    outFile << "   // lcl=sp\n";
     outFile <<
-        "@SP\n"
-        "D=M\n"
-        "@LCL\n"
-        "M=D\n";
+        "   @SP\n"
+        "   D=M\n"
+        "   @LCL\n"
+        "   M=D\n";
 
-    outFile << "// transfer control\n";
-    outFile << "@" << func << "\n";
-    outFile << "0;JMP\n";
+    outFile << "   // transfer control\n";
+    outFile << "   @" << func << "\n";
+    outFile << "   0;JMP\n";
 
+    outFile << "\n";
     outFile << "// label return address\n";
-    outFile << "(" << func << ")\n";
+    outFile << "(" << retAddr << ")\n";
 }
 
 void codeWriter::writeReturn(){
@@ -514,89 +541,90 @@ void codeWriter::writeReturn(){
     outFile << "\n// return\n";
 
     outFile << 
-        "@LCL\n"
-        "D=M\n"
-        "@frame // lcl\n"
-        "M=D\n";
+        "   @LCL\n"
+        "   D=M\n"
+        "   @frame // lcl\n"
+        "   M=D\n";
 
-    outFile << "// ret = *(lcl-5)\n";
+    outFile << "\n   // return address = *(lcl-5)\n";
     outFile << 
-        "@5\n"
-        "D=A\n"
-        "@frame\n"
-        "D=M-D\n"
-        "A=D\n"
-        "D=M\n"
-        "@current_return // ret\n"
-        "M=D\n";
+        "   @5\n"
+        "   D=A\n"
+        "   @frame\n"
+        "   D=M-D\n"
+        "   A=D\n"
+        "   D=M\n"
+        "   @current_return // ret\n"
+        "   M=D\n";
 
-    outFile << "// *arg=pop() reposition return value\n";
+    outFile << "\n   // *arg=pop() reposition return value\n";
     outFile <<
-        "@SP\n"
-        "AM=M-1\n"
-        "D=M\n"
-        "@ARG\n"
-        "A=M\n"
-        "M=D\n";
+        "   @SP\n"
+        "   AM=M-1\n"
+        "   D=M\n"
+        "   @ARG\n"
+        "   A=M\n"
+        "   M=D\n";
 
-    outFile << "// sp=arg+1\n";
+    outFile << "\n   // sp=arg+1\n";
     outFile <<
-        "@ARG\n"
-        "D=M+1\n"
-        "@SP\n"
-        "M=D\n";
+        "   @ARG\n"
+        "   D=M+1\n"
+        "   @SP\n"
+        "   M=D\n";
 
-    outFile << "// that=*(frame-1)\n";
+    outFile << "\n   // that=*(frame-1)\n";
     outFile << 
-        "@frame\n"
-        "D=M-1\n"
-        "A=D\n"
-        "D=M\n"
-        "@THAT\n"
-        "M=D\n";
+        "   @frame\n"
+        "   D=M-1\n"
+        "   A=D\n"
+        "   D=M\n"
+        "   @THAT\n"
+        "   M=D\n";
 
-    outFile << "// this=*(frame-2)\n";
+    outFile << "\n   // this=*(frame-2)\n";
     outFile <<
-        "@2\n"
-        "D=A\n"
-        "@frame\n"
-        "D=M-D\n"
-        "A=D\n"
-        "D=M\n"
-        "@THIS\n"
-        "M=D\n";
+        "   @2\n"
+        "   D=A\n"
+        "   @frame\n"
+        "   D=M-D\n"
+        "   A=D\n"
+        "   D=M\n"
+        "   @THIS\n"
+        "   M=D\n";
 
-    outFile << "// arg=*(frame-3)\n";
+    outFile << "\n   // arg=*(frame-3)\n";
     outFile <<
-        "@3\n"
-        "D=A\n"
-        "@frame\n"
-        "D=M-D\n"
-        "A=D\n"
-        "D=M\n"       
-        "@ARG\n"
-        "M=D\n";
+        "   @3\n"
+        "   D=A\n"
+        "   @frame\n"
+        "   D=M-D\n"
+        "   A=D\n"
+        "   D=M\n"       
+        "   @ARG\n"
+        "   M=D\n";
 
-    outFile << "// lcl=*(frame-4)\n";
+    outFile << "\n   // lcl=*(frame-4)\n";
     outFile <<
-        "@4\n"
-        "D=A\n"
-        "@frame\n"
-        "D=M-D\n"
-        "A=D\n"
-        "D=M\n"    
-        "@LCL\n"
-        "M=D\n";
+        "   @4\n"
+        "   D=A\n"
+        "   @frame\n"
+        "   D=M-D\n"
+        "   A=D\n"
+        "   D=M\n"    
+        "   @LCL\n"
+        "   M=D\n";
 
-    outFile << "// goto ret\n";
+    outFile << "\n   // goto ret\n";
     outFile <<
-        "@current_return\n"
-        "M;JMP\n";
+        "   @current_return\n"
+        "   0;JMP\n";
 }
 
 void codeWriter::writeFunction(string func, int args){
     std::cout << "writing func: " << func << " " << args << std::endl;
 
+    outFile << "\n";
     outFile << "// label function entry\n";
     outFile << "(" << func << ")\n";
 

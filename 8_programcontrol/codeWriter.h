@@ -15,6 +15,7 @@ class codeWriter {
     string fileName;
 
     int cmpCnt;
+    int retAddrCnt;
 
 public:
     // opens output file and gets ready to write to it
