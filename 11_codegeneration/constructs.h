@@ -1,9 +1,13 @@
 #pragma once
 
+#ifndef _constructs
+#define _constructs
+
 #include <string>
 using std::string;
 
-enum varKind{
+enum class varKind
+{
     NONE,
     STATIC,
     FIELD,
@@ -11,23 +15,24 @@ enum varKind{
     VAR
 };
 
-enum segment{
-    CONST,
+enum class segment
+{
+    _CONST,
     ARG,
     LOCAL,
     STATIC,
-    THIS,
-    THAT,
-    POINTER,
+    _THIS,
+    _THAT,
+    _POINTER,
     TEMP
 };
 
-const char* segmentStrings[] = {
-    "const", "arg", "local", "static", 
-    "this", "that", "pointer", "temp"
-};
+const string segmentStrings[] = {
+    "const", "arg", "local", "static",
+    "this", "that", "pointer", "temp"};
 
-enum command{
+enum class command
+{
     ADD,
     SUB,
     NEG,
@@ -39,12 +44,12 @@ enum command{
     NOT
 };
 
-const char* commandStrings[] = {
-    "add", "sub", "neg", "eq", 
-    "gt", "lt", "and", "or", "not"
-}
+const string commandStrings[] = {
+    "add", "sub", "neg", "eq",
+    "gt", "lt", "and", "or", "not"};
 
-enum tokentype{
+enum class tokentype
+{
     INVALID,
     KEYWORD,
     SYMBOL,
@@ -53,7 +58,8 @@ enum tokentype{
     STRING_CONST
 };
 
-enum keyword{
+enum class keyword
+{
     NULLVALUE,
     CLASS,
     CONSTRUCTOR,
@@ -61,51 +67,48 @@ enum keyword{
     METHOD,
     FIELD,
     STATIC,
-    VAR,   
+    VAR,
     INT,
     CHAR,
-    BOOLEAN,     
-    VOID,
-    TRUE,
-    FALSE,
-    THIS,   
+    BOOLEAN,
+    _VOID,
+    _TRUE,
+    _FALSE,
+    _THIS,
     LET,
     DO,
     IF,
-    ELSE,
-    WHILE,
-    RETURN,          
+    _ELSE,
+    _WHILE,
+    RETURN
 };
 
 const string keywords[] = {
-    "null", "class", "constructor", "function", "method", 
-    "field", "static", "var", "int", "char", "boolean", 
-    "void", "true", "false", "this", "let", 
-    "do", "if", "else", "while", "return"
-};
+    "null", "class", "constructor", "function", "method",
+    "field", "static", "var", "int", "char", "boolean",
+    "void", "true", "false", "this", "let",
+    "do", "if", "else", "while", "return"};
 
 const int int_max = 32767;
 
-const char symbols[] = { 
+const char symbols[] = {
     '{', '}', '(', ')', '[', ']', '.',
     ',', ';', '+', '-', '*', '/', '&',
-    '|', '<', '>', '=', '~'
-};
+    '|', '<', '>', '=', '~'};
 
 const string symbolString =
     "{}()[].,;+-*/&|<>=~";
 
 const string ops = {
     '+', '-', '*', '/', '&', '|',
-    '<', '>', '='
-};
+    '<', '>', '='};
 
 const char unaryOps[] = {
-    '~', '-'
-};
+    '~', '-'};
 
 const string keywordConstants[] = {
-    "true", "false", "null", "this"
-};
+    "true", "false", "null", "this"};
 
 const char tab = '\t';
+
+#endif

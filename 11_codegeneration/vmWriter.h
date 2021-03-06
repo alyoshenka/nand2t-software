@@ -1,23 +1,23 @@
 #pragma once
 
-#include "constructs.h";
+#include "constructs.h"
 
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <cassert>
 
-using std::string;
 using std::ofstream;
+using std::string;
 
 /** Emits VM commands into a file, 
  * using the VM command syntax. */
-class vmWriter{
+class vmWriter
+{
 
     ofstream outStream;
 
 public:
-
     /** Creates a new file and prepares it
      * for writing. */
     vmWriter(string outFile);
