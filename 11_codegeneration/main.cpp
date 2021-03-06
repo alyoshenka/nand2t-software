@@ -63,7 +63,6 @@ int main(int cnt, char *args[])
     { // else dir
         // for all .jack files inFile/
         //      compileFile(filename.jack);
-        /*
 
         std::string pattern(inFile);
         pattern.append("\\*.jack");
